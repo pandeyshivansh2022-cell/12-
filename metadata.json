@@ -1,0 +1,6 @@
+{
+  "name": "Gangstream AI",
+  "description": "Sleek dark-mode AI workspace for Gangstream AI bot featuring vibrant blue neon accents, real-time Gemini chat with high thinking mode, search grounding, voice synthesis, and visual studios.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
