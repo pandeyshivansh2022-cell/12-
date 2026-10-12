@@ -82,7 +82,7 @@ fun SessionsHistoryScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(ObsidianBlack)
+            .background(Color.Transparent)
             .padding(16.dp)
             .testTag("sessions_history_screen")
     ) {

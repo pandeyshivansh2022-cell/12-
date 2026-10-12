@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import coil.compose.rememberAsyncImagePainter
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -92,7 +93,7 @@ fun VisualStudioScreen(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(ObsidianBlack)
+            .background(Color.Transparent)
             .padding(horizontal = 16.dp),
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
@@ -113,16 +114,44 @@ fun VisualStudioScreen(
                         color = TextPrimaryDark
                     )
                     Text(
-                        text = "Image generation (Gemini 3.1 Flash Image) & Veo Video Studio",
+                        text = if (uiState.useCustomBackend) "Engine: OpenAI DALL·E 3 & FFmpeg Video (Express Server)" else "Engine: Gemini 3.1 Flash Image & Veo Video",
                         fontSize = 11.sp,
-                        color = TextSecondaryDark
+                        color = if (uiState.useCustomBackend) com.example.ui.theme.NeonGreen else TextSecondaryDark
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-            // Mode Selector: Image vs Veo Video
+            // Engine Switcher Pill
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(CyberSurfaceDark)
+                    .border(1.dp, if (uiState.useCustomBackend) com.example.ui.theme.NeonGreen.copy(alpha = 0.5f) else CyberBorder, RoundedCornerShape(8.dp))
+                    .clickable { viewModel.toggleCustomBackend() }
+                    .padding(horizontal = 10.dp, vertical = 6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = if (uiState.useCustomBackend) "Mode: Express Media Generator (/api/*)" else "Mode: Direct Gemini AI Generative API",
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = if (uiState.useCustomBackend) com.example.ui.theme.NeonGreen else NeonCyan
+                )
+                Text(
+                    text = "SWITCH",
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White.copy(alpha = 0.7f)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Mode Selector: Image vs Video
             TabRow(
                 selectedTabIndex = if (uiState.visualType == "IMAGE") 0 else 1,
                 containerColor = CyberSurfaceDark,
@@ -130,7 +159,7 @@ fun VisualStudioScreen(
                 indicator = { tabPositions ->
                     TabRowDefaults.SecondaryIndicator(
                         modifier = Modifier.tabIndicatorOffset(tabPositions[if (uiState.visualType == "IMAGE") 0 else 1]),
-                        color = NeonCyan
+                        color = if (uiState.useCustomBackend) com.example.ui.theme.NeonGreen else NeonCyan
                     )
                 },
                 modifier = Modifier
@@ -145,7 +174,11 @@ fun VisualStudioScreen(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(imageVector = Icons.Default.Image, contentDescription = null, modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text("Gemini 3.1 Image", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                            Text(
+                                text = if (uiState.useCustomBackend) "DALL·E 3 Image" else "Gemini 3.1 Image",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 12.sp
+                            )
                         }
                     }
                 )
@@ -156,7 +189,11 @@ fun VisualStudioScreen(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(imageVector = Icons.Default.Movie, contentDescription = null, modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text("Veo 3.1 Video", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                            Text(
+                                text = if (uiState.useCustomBackend) "FFmpeg Video" else "Veo 3.1 Video",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 12.sp
+                            )
                         }
                     }
                 )
@@ -440,27 +477,38 @@ fun VisualCreationCard(
 
             // Display Image Bitmap or Video Placeholder
             if (item.type == "IMAGE" && item.mediaUrlOrBase64.isNotEmpty()) {
-                val bitmap = remember(item.mediaUrlOrBase64) {
-                    try {
-                        val decodedBytes = Base64.decode(item.mediaUrlOrBase64, Base64.DEFAULT)
-                        BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
-                    } catch (e: Exception) {
-                        null
-                    }
-                }
-
-                if (bitmap != null) {
+                if (item.mediaUrlOrBase64.startsWith("http://") || item.mediaUrlOrBase64.startsWith("https://")) {
                     Image(
-                        bitmap = bitmap.asImageBitmap(),
+                        painter = rememberAsyncImagePainter(model = item.mediaUrlOrBase64),
                         contentDescription = item.prompt,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(200.dp)
                             .clip(RoundedCornerShape(8.dp))
                     )
+                } else {
+                    val bitmap = remember(item.mediaUrlOrBase64) {
+                        try {
+                            val decodedBytes = Base64.decode(item.mediaUrlOrBase64, Base64.DEFAULT)
+                            BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+                        } catch (e: Exception) {
+                            null
+                        }
+                    }
+
+                    if (bitmap != null) {
+                        Image(
+                            bitmap = bitmap.asImageBitmap(),
+                            contentDescription = item.prompt,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                        )
+                    }
                 }
             } else {
-                // Video simulation preview card
+                // Video simulation / generated preview card
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -478,11 +526,11 @@ fun VisualCreationCard(
                         Icon(
                             imageVector = Icons.Default.PlayArrow,
                             contentDescription = null,
-                            tint = NeonCyan,
+                            tint = if (item.modelUsed.contains("FFmpeg")) com.example.ui.theme.NeonGreen else NeonCyan,
                             modifier = Modifier.size(48.dp)
                         )
                         Text(
-                            text = "Veo 3.1 Video Stream Ready",
+                            text = if (item.modelUsed.contains("FFmpeg")) "FFmpeg Generated Video Ready" else "Veo 3.1 Video Stream Ready",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = TextPrimaryDark

@@ -103,7 +103,7 @@ fun VoiceStudioScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(ObsidianBlack)
+            .background(Color.Transparent)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

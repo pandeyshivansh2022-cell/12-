@@ -61,6 +61,8 @@ import com.example.ui.theme.ObsidianBlack
 import com.example.ui.theme.TextMutedDark
 import com.example.ui.theme.TextPrimaryDark
 import com.example.ui.theme.TextSecondaryDark
+import com.example.ui.theme.UserMessageGreen
+import com.example.ui.theme.BotMessageBlue
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -105,61 +107,28 @@ fun CyberMessageBubble(
             horizontalAlignment = if (isUser) Alignment.End else Alignment.Start
         ) {
             // Main Message Card
+            val bubbleShape = RoundedCornerShape(
+                topStart = 14.dp,
+                topEnd = 14.dp,
+                bottomStart = if (isUser) 14.dp else 2.dp,
+                bottomEnd = if (isUser) 2.dp else 14.dp
+            )
             Box(
                 modifier = Modifier
-                    .clip(
-                        RoundedCornerShape(
-                            topStart = 16.dp,
-                            topEnd = 16.dp,
-                            bottomStart = if (isUser) 16.dp else 4.dp,
-                            bottomEnd = if (isUser) 4.dp else 16.dp
-                        )
-                    )
+                    .clip(bubbleShape)
                     .background(
                         if (isUser) {
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    Color(0xFF0F2B48),
-                                    Color(0xFF081C33)
-                                )
-                            )
+                            UserMessageGreen
                         } else if (message.isError) {
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    Color(0xFF3B1111),
-                                    Color(0xFF220A0A)
-                                )
-                            )
+                            Color(0xFFE53935)
                         } else {
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    CyberSurfaceElevated,
-                                    CyberSurfaceDark
-                                )
-                            )
+                            BotMessageBlue
                         }
                     )
                     .border(
-                        width = 1.dp,
-                        brush = if (isUser) {
-                            Brush.linearGradient(
-                                colors = listOf(NeonSkyBlue.copy(alpha = 0.4f), Color.Transparent)
-                            )
-                        } else if (message.isError) {
-                            Brush.linearGradient(
-                                colors = listOf(NeonRed.copy(alpha = 0.6f), Color.Transparent)
-                            )
-                        } else {
-                            Brush.linearGradient(
-                                colors = listOf(NeonCyan.copy(alpha = 0.3f), NeonIndigo.copy(alpha = 0.2f))
-                            )
-                        },
-                        shape = RoundedCornerShape(
-                            topStart = 16.dp,
-                            topEnd = 16.dp,
-                            bottomStart = if (isUser) 16.dp else 4.dp,
-                            bottomEnd = if (isUser) 4.dp else 16.dp
-                        )
+                        width = 0.5.dp,
+                        color = Color.White.copy(alpha = 0.2f),
+                        shape = bubbleShape
                     )
                     .padding(horizontal = 14.dp, vertical = 12.dp)
             ) {
@@ -171,11 +140,11 @@ fun CyberMessageBubble(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = if (isUser) "YOU" else "GANGSTREAM",
+                            text = if (isUser) "YOU" else "GANGSTREAM AI",
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             letterSpacing = 1.sp,
-                            color = if (isUser) NeonSkyBlue else NeonCyan
+                            color = Color.White.copy(alpha = 0.9f)
                         )
 
                         if (!isUser && message.modelUsed != null) {
@@ -217,7 +186,7 @@ fun CyberMessageBubble(
                         text = message.text,
                         fontSize = 14.sp,
                         lineHeight = 20.sp,
-                        color = if (message.isError) NeonRed else TextPrimaryDark
+                        color = Color.White
                     )
 
                     // Search Grounding Citations if present

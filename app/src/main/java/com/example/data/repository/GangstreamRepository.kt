@@ -8,6 +8,7 @@ import com.example.data.model.ChatSession
 import com.example.data.model.VisualCreation
 import com.example.data.remote.GeminiApiClient
 import com.example.data.remote.GeminiGenerationResult
+import com.example.data.remote.GangstreamBackendClient
 import kotlinx.coroutines.flow.Flow
 import org.json.JSONArray
 import org.json.JSONObject
@@ -16,7 +17,8 @@ import java.util.UUID
 class GangstreamRepository(
     private val chatDao: ChatDao,
     private val visualDao: VisualDao,
-    private val apiClient: GeminiApiClient = GeminiApiClient()
+    private val apiClient: GeminiApiClient = GeminiApiClient(),
+    private val backendClient: GangstreamBackendClient = GangstreamBackendClient()
 ) {
     val allSessions: Flow<List<ChatSession>> = chatDao.getAllSessions()
     val allVisualCreations: Flow<List<VisualCreation>> = visualDao.getAllCreations()
@@ -48,6 +50,16 @@ class GangstreamRepository(
             updatedAt = System.currentTimeMillis()
         )
         chatDao.insertOrUpdateSession(session)
+        // Add initial bot greeting from Gangstream AI Chatbot
+        val initialGreeting = ChatMessage(
+            id = UUID.randomUUID().toString(),
+            sessionId = id,
+            role = "model",
+            text = "Hello! How can I assist you today?",
+            modelUsed = modelName,
+            timestamp = System.currentTimeMillis()
+        )
+        chatDao.insertMessage(initialGreeting)
         return id
     }
 
@@ -79,7 +91,9 @@ class GangstreamRepository(
         modelName: String = "gemini-3.5-flash",
         enableThinking: Boolean = false,
         enableSearchGrounding: Boolean = false,
-        pastMessages: List<ChatMessage> = emptyList()
+        pastMessages: List<ChatMessage> = emptyList(),
+        useCustomBackend: Boolean = false,
+        backendUrl: String = "http://10.0.2.2:3000"
     ): ChatMessage {
         val userMsgId = UUID.randomUUID().toString()
         val userMessage = ChatMessage(
@@ -88,7 +102,7 @@ class GangstreamRepository(
             role = "user",
             text = userPrompt,
             timestamp = System.currentTimeMillis(),
-            modelUsed = modelName
+            modelUsed = if (useCustomBackend) "Dialogflow (Express)" else modelName
         )
         chatDao.insertMessage(userMessage)
 
@@ -97,6 +111,36 @@ class GangstreamRepository(
         if (currentSession != null && (currentSession.title == "Gangstream Session" || currentSession.title == "New Session")) {
             val autoTitle = if (userPrompt.length > 28) userPrompt.take(28) + "..." else userPrompt
             chatDao.updateSession(currentSession.copy(title = autoTitle, updatedAt = System.currentTimeMillis()))
+        }
+
+        // If custom Express / Dialogflow backend mode is enabled
+        if (useCustomBackend) {
+            return try {
+                val backendResponse = backendClient.sendChatMessage(backendUrl, userPrompt)
+                val modelMessage = ChatMessage(
+                    id = UUID.randomUUID().toString(),
+                    sessionId = sessionId,
+                    role = "model",
+                    text = backendResponse,
+                    modelUsed = "Dialogflow ES",
+                    timestamp = System.currentTimeMillis(),
+                    isError = false
+                )
+                chatDao.insertMessage(modelMessage)
+                modelMessage
+            } catch (e: Exception) {
+                val errorMessage = ChatMessage(
+                    id = UUID.randomUUID().toString(),
+                    sessionId = sessionId,
+                    role = "model",
+                    text = "Failed to connect to the chatbot backend (${backendUrl}): ${e.message}",
+                    modelUsed = "Dialogflow ES",
+                    timestamp = System.currentTimeMillis(),
+                    isError = true
+                )
+                chatDao.insertMessage(errorMessage)
+                errorMessage
+            }
         }
 
         // Format history for Gemini
@@ -161,7 +205,27 @@ class GangstreamRepository(
         return apiClient.generateSpeech(text, voiceName)
     }
 
-    suspend fun generateImage(prompt: String, aspectRatio: String = "1:1"): VisualCreation {
+    suspend fun generateImage(
+        prompt: String,
+        aspectRatio: String = "1:1",
+        useCustomBackend: Boolean = false,
+        backendUrl: String = "http://10.0.2.2:3000"
+    ): VisualCreation {
+        if (useCustomBackend) {
+            val imageUrl = backendClient.generateImage(backendUrl, prompt)
+            val creation = VisualCreation(
+                id = UUID.randomUUID().toString(),
+                prompt = prompt,
+                type = "IMAGE",
+                mediaUrlOrBase64 = imageUrl,
+                aspectRatio = aspectRatio,
+                modelUsed = "OpenAI DALL·E 3 (Express)",
+                timestamp = System.currentTimeMillis()
+            )
+            visualDao.insertCreation(creation)
+            return creation
+        }
+
         val base64Image = apiClient.generateImage(prompt, aspectRatio)
         val creation = VisualCreation(
             id = UUID.randomUUID().toString(),
@@ -176,7 +240,28 @@ class GangstreamRepository(
         return creation
     }
 
-    suspend fun generateVideoPrompt(prompt: String, aspectRatio: String = "16:9"): VisualCreation {
+    suspend fun generateVideoPrompt(
+        prompt: String,
+        aspectRatio: String = "16:9",
+        useCustomBackend: Boolean = false,
+        backendUrl: String = "http://10.0.2.2:3000",
+        cacheDir: java.io.File? = null
+    ): VisualCreation {
+        if (useCustomBackend && cacheDir != null) {
+            val videoPath = backendClient.generateVideo(backendUrl, prompt, duration = 5, cacheDir = cacheDir)
+            val creation = VisualCreation(
+                id = UUID.randomUUID().toString(),
+                prompt = prompt,
+                type = "VIDEO",
+                mediaUrlOrBase64 = videoPath,
+                aspectRatio = aspectRatio,
+                modelUsed = "FFmpeg Video (Express)",
+                timestamp = System.currentTimeMillis()
+            )
+            visualDao.insertCreation(creation)
+            return creation
+        }
+
         // Veo fast simulation & real API call attempt
         val rawResponse = try {
             apiClient.generateVideo(prompt, aspectRatio)
@@ -199,5 +284,9 @@ class GangstreamRepository(
 
     suspend fun deleteVisualCreation(id: String) {
         visualDao.deleteCreationById(id)
+    }
+
+    suspend fun checkBackendHealth(backendUrl: String): Pair<Boolean, String> {
+        return backendClient.checkHealth(backendUrl)
     }
 }

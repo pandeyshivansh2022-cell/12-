@@ -58,6 +58,15 @@ import com.example.ui.theme.TextMutedDark
 import com.example.ui.theme.TextPrimaryDark
 import com.example.ui.theme.TextSecondaryDark
 
+import androidx.compose.material.icons.filled.Dns
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.ErrorOutline
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModelSelectorSheet(
@@ -66,6 +75,9 @@ fun ModelSelectorSheet(
     onModelSelected: (String) -> Unit,
     onToggleThinking: () -> Unit,
     onToggleSearch: () -> Unit,
+    onToggleCustomBackend: () -> Unit = {},
+    onCustomBackendUrlChanged: (String) -> Unit = {},
+    onTestBackendConnection: () -> Unit = {},
     onDismiss: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -273,6 +285,136 @@ fun ModelSelectorSheet(
                         uncheckedTrackColor = CyberSurfaceElevated
                     )
                 )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Custom Express / Dialogflow Backend Section
+            Text(
+                text = "EXPRESS & DIALOGFLOW BACKEND",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Black,
+                letterSpacing = 1.2.sp,
+                color = com.example.ui.theme.NeonGreen
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(CyberSurfaceDark)
+                    .border(1.dp, if (uiState.useCustomBackend) com.example.ui.theme.NeonGreen.copy(alpha = 0.6f) else CyberBorder, RoundedCornerShape(12.dp))
+                    .padding(14.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = Icons.Default.Dns,
+                                contentDescription = null,
+                                tint = if (uiState.useCustomBackend) com.example.ui.theme.NeonGreen else TextSecondaryDark,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "Use Express Backend (/api/chat)",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = TextPrimaryDark
+                            )
+                        }
+                        Text(
+                            text = "Routes chat transmissions through your local/remote Express + Dialogflow ES server.",
+                            fontSize = 11.sp,
+                            color = TextSecondaryDark
+                        )
+                    }
+                    Switch(
+                        checked = uiState.useCustomBackend,
+                        onCheckedChange = { onToggleCustomBackend() },
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = ObsidianBlack,
+                            checkedTrackColor = com.example.ui.theme.NeonGreen,
+                            uncheckedThumbColor = TextMutedDark,
+                            uncheckedTrackColor = CyberSurfaceElevated
+                        )
+                    )
+                }
+
+                if (uiState.useCustomBackend) {
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    OutlinedTextField(
+                        value = uiState.customBackendUrl,
+                        onValueChange = onCustomBackendUrlChanged,
+                        label = { Text("Server Base URL", fontSize = 11.sp) },
+                        placeholder = { Text("http://10.0.2.2:3000 or http://localhost:3000", fontSize = 11.sp) },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = TextPrimaryDark,
+                            unfocusedTextColor = TextPrimaryDark,
+                            focusedBorderColor = com.example.ui.theme.NeonGreen,
+                            unfocusedBorderColor = CyberBorder
+                        )
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Button(
+                            onClick = onTestBackendConnection,
+                            enabled = !uiState.isCheckingBackend,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = CyberSurfaceElevated,
+                                contentColor = com.example.ui.theme.NeonGreen
+                            ),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier.border(1.dp, com.example.ui.theme.NeonGreen.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
+                        ) {
+                            if (uiState.isCheckingBackend) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(14.dp),
+                                    strokeWidth = 2.dp,
+                                    color = com.example.ui.theme.NeonGreen
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text("Checking /health...", fontSize = 11.sp)
+                            } else {
+                                Text("Test Connection (/health)", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
+
+                        if (uiState.backendStatus != null) {
+                            val isOnline = uiState.backendStatus.startsWith("Online")
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = if (isOnline) Icons.Default.CheckCircle else Icons.Default.ErrorOutline,
+                                    contentDescription = null,
+                                    tint = if (isOnline) com.example.ui.theme.NeonGreen else com.example.ui.theme.NeonRed,
+                                    modifier = Modifier.size(14.dp)
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(
+                                    text = uiState.backendStatus,
+                                    fontSize = 10.sp,
+                                    color = if (isOnline) com.example.ui.theme.NeonGreen else com.example.ui.theme.NeonRed,
+                                    maxLines = 1
+                                )
+                            }
+                        }
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.height(28.dp))

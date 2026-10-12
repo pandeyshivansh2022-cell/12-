@@ -11,18 +11,14 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,78 +29,64 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.AddPhotoAlternate
-import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.ElectricBolt
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.MicOff
-import androidx.compose.material.icons.filled.Psychology
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-import com.example.R
-import com.example.data.model.ChatMessage
 import com.example.ui.GangstreamViewModel
 import com.example.ui.WorkspaceUiState
 import com.example.ui.components.CyberMessageBubble
 import com.example.ui.components.NeonGLogo
 import com.example.ui.components.QuickPromptChips
-import com.example.ui.theme.CyberBorder
-import com.example.ui.theme.CyberBorderGlowing
-import com.example.ui.theme.CyberSurfaceCard
-import com.example.ui.theme.CyberSurfaceDark
-import com.example.ui.theme.CyberSurfaceElevated
-import com.example.ui.theme.NeonCyan
-import com.example.ui.theme.NeonElectricBlue
-import com.example.ui.theme.NeonIndigo
-import com.example.ui.theme.NeonSkyBlue
-import com.example.ui.theme.ObsidianBlack
-import com.example.ui.theme.TextMutedDark
-import com.example.ui.theme.TextPrimaryDark
-import com.example.ui.theme.TextSecondaryDark
+import com.example.ui.theme.GlassBorder
+import com.example.ui.theme.GlassCardBackground
+import com.example.ui.theme.GlassInputBackground
+import com.example.ui.theme.GlassMessagesBackground
+import com.example.ui.theme.GradientEndPurple
+import com.example.ui.theme.GradientStartPurple
+import com.example.ui.theme.SendButtonOrange
+import com.example.ui.theme.SendButtonOrangeHover
 
 @Composable
 fun ChatWorkspace(
@@ -143,7 +125,7 @@ fun ChatWorkspace(
                 }
                 viewModel.setSelectedImage(bitmap)
             } catch (e: Exception) {
-                // Handle bitmap decode failure
+                // Ignore failure
             }
         }
     }
@@ -155,297 +137,227 @@ fun ChatWorkspace(
         }
     }
 
-    Column(
+    // Full screen outer layout with linear gradient 135deg (#667eea -> #764ba2)
+    Box(
         modifier = modifier
             .fillMaxSize()
-            .background(ObsidianBlack)
-            .imePadding()
-            .testTag("chat_workspace")
-    ) {
-        // Connected Persona Status Bar
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(CyberSurfaceDark.copy(alpha = 0.7f))
-                .padding(horizontal = 16.dp, vertical = 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Favorite,
-                    contentDescription = null,
-                    tint = NeonCyan,
-                    modifier = Modifier.size(13.dp)
+            .background(
+                Brush.linearGradient(
+                    colors = listOf(GradientStartPurple, GradientEndPurple)
                 )
-                Spacer(modifier = Modifier.width(6.dp))
+            )
+            .imePadding()
+            .testTag("chat_workspace"),
+        contentAlignment = Alignment.Center
+    ) {
+        // Chat container with glassmorphic styling matching .chat-container in HTML
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .widthIn(max = 520.dp)
+                .padding(horizontal = 14.dp, vertical = 10.dp)
+                .clip(RoundedCornerShape(15.dp))
+                .background(GlassCardBackground)
+                .border(1.dp, GlassBorder, RoundedCornerShape(15.dp))
+                .padding(16.dp)
+                .testTag("chat_container")
+        ) {
+            // Chat Header matching .chat-header h1 in HTML
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 12.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                NeonGLogo(
+                    size = 28.dp,
+                    showGlow = false,
+                    animated = false
+                )
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Companion: ${uiState.selectedPersona.displayName}",
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = NeonCyan
+                    text = "Gangstream AI",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    textAlign = TextAlign.Center
                 )
             }
 
-            Text(
-                text = if (uiState.isThinkingMode) "3.1 Pro Thinking" else uiState.selectedModel.replace("-preview", ""),
-                fontSize = 10.sp,
-                color = TextSecondaryDark
-            )
-        }
-
-        // Chat Thread Area
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-        ) {
-            if (messages.isEmpty() && !uiState.isGenerating) {
-                // Empty state Hero Graphic
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    NeonGLogo(
-                        size = 72.dp,
-                        showGlow = true,
-                        animated = true
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text(
-                        text = "GANGSTREAM AI BOT",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Black,
-                        letterSpacing = 2.sp,
-                        color = TextPrimaryDark
-                    )
-
-                    Spacer(modifier = Modifier.height(6.dp))
-
-                    Text(
-                        text = "A connected, emotionally perceptive intelligence designed for deep conversations, lightning solutions, and creative synergy.",
-                        fontSize = 13.sp,
-                        color = TextSecondaryDark,
-                        textAlign = TextAlign.Center,
-                        lineHeight = 18.sp
-                    )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    // Mode Badges
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+            // Chat Messages area matching .chat-messages in HTML
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(GlassMessagesBackground)
+                    .border(0.5.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(10.dp))
+                    .padding(8.dp)
+                    .testTag("chat_messages_area")
+            ) {
+                if (messages.isEmpty() && !uiState.isGenerating) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(NeonIndigo.copy(alpha = 0.15f))
-                                .border(1.dp, NeonIndigo.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
-                                .padding(horizontal = 10.dp, vertical = 6.dp)
-                        ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = Icons.Default.Psychology,
-                                    contentDescription = null,
-                                    tint = NeonIndigo,
-                                    modifier = Modifier.size(14.dp)
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text(
-                                    text = "3.1 Pro Thinking",
-                                    fontSize = 11.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = NeonIndigo
-                                )
-                            }
-                        }
-
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(NeonCyan.copy(alpha = 0.15f))
-                                .border(1.dp, NeonCyan.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
-                                .padding(horizontal = 10.dp, vertical = 6.dp)
-                        ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = Icons.Default.Search,
-                                    contentDescription = null,
-                                    tint = NeonCyan,
-                                    modifier = Modifier.size(14.dp)
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text(
-                                    text = "Live Search Grounding",
-                                    fontSize = 11.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = NeonCyan
-                                )
-                            }
-                        }
-                    }
-                }
-            } else {
-                LazyColumn(
-                    state = listState,
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
-                ) {
-                    items(messages, key = { it.id }) { message ->
-                        CyberMessageBubble(
-                            message = message,
-                            isPlayingAudio = isPlayingAudio && playingMessageId == message.id,
-                            onPlayAudioClick = { viewModel.playMessageAudio(message) },
-                            onStopAudioClick = { viewModel.stopAudio() },
-                            onDeleteClick = { viewModel.deleteMessage(message.id) },
-                            onReactClick = { emoji -> viewModel.reactToMessage(message.id, emoji) },
-                            onPromptClick = { prompt -> viewModel.sendMessage(prompt) }
+                        NeonGLogo(
+                            size = 54.dp,
+                            showGlow = false,
+                            animated = true
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(
+                            text = "Hello! How can I assist you today?",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White,
+                            textAlign = TextAlign.Center
                         )
                     }
+                } else {
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 6.dp)
+                    ) {
+                        items(messages, key = { it.id }) { message ->
+                            CyberMessageBubble(
+                                message = message,
+                                isPlayingAudio = isPlayingAudio && playingMessageId == message.id,
+                                onPlayAudioClick = { viewModel.playMessageAudio(message) },
+                                onStopAudioClick = { viewModel.stopAudio() },
+                                onDeleteClick = { viewModel.deleteMessage(message.id) },
+                                onReactClick = { emoji -> viewModel.reactToMessage(message.id, emoji) },
+                                onPromptClick = { prompt -> viewModel.sendMessage(prompt) }
+                            )
+                        }
 
-                    // Neural Generating Wave indicator
-                    if (uiState.isGenerating) {
-                        item {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 8.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                NeonGLogo(
-                                    size = 28.dp,
-                                    showGlow = true,
-                                    animated = true
-                                )
-                                Spacer(modifier = Modifier.width(10.dp))
-                                Column {
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        CircularProgressIndicator(
-                                            modifier = Modifier.size(14.dp),
-                                            color = NeonCyan,
-                                            strokeWidth = 2.dp
-                                        )
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        Text(
-                                            text = if (uiState.isThinkingMode) "Gangstream is synthesizing high cognition thoughts..." else "Gangstream is reflecting...",
-                                            fontSize = 12.sp,
-                                            fontWeight = FontWeight.Medium,
-                                            color = NeonCyan
-                                        )
-                                    }
+                        // Bot typing / thinking status
+                        if (uiState.isGenerating) {
+                            item {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 8.dp, horizontal = 4.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(16.dp),
+                                        color = Color.White,
+                                        strokeWidth = 2.dp
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = if (uiState.isThinkingMode) "Gangstream is thinking deeply..." else "Gangstream AI is typing...",
+                                        fontSize = 12.sp,
+                                        color = Color.White.copy(alpha = 0.9f)
+                                    )
                                 }
                             }
                         }
                     }
                 }
             }
-        }
 
-        // Live Voice Recording Banner
-        AnimatedVisibility(
-            visible = uiState.isRecordingVoice,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 6.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(NeonCyan.copy(alpha = 0.15f))
-                    .border(1.dp, NeonCyan, RoundedCornerShape(12.dp))
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+            // Voice Recording Banner if recording
+            AnimatedVisibility(
+                visible = uiState.isRecordingVoice,
+                enter = fadeIn(),
+                exit = fadeOut()
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier
-                            .size(10.dp)
-                            .clip(CircleShape)
-                            .background(Color(0xFFF43F5E))
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = if (uiState.inputText.isNotEmpty()) "Transcribing: \"${uiState.inputText}\"" else "Listening... Speak naturally to Gangstream",
-                        fontSize = 12.sp,
-                        color = TextPrimaryDark,
-                        maxLines = 1
-                    )
-                }
-
-                IconButton(
-                    onClick = { viewModel.stopVoiceRecording() },
-                    modifier = Modifier.size(24.dp)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Color.White.copy(alpha = 0.15f))
+                        .border(1.dp, Color.White.copy(alpha = 0.4f), RoundedCornerShape(12.dp))
+                        .padding(horizontal = 12.dp, vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Stop,
-                        contentDescription = "Stop voice recording",
-                        tint = Color(0xFFF43F5E),
-                        modifier = Modifier.size(16.dp)
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(8.dp)
+                                .clip(CircleShape)
+                                .background(Color(0xFFFF5252))
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = if (uiState.inputText.isNotEmpty()) "Transcribing: \"${uiState.inputText}\"" else "Listening... Speak now",
+                            fontSize = 12.sp,
+                            color = Color.White,
+                            maxLines = 1
+                        )
+                    }
+
+                    IconButton(
+                        onClick = { viewModel.stopVoiceRecording() },
+                        modifier = Modifier.size(24.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Stop,
+                            contentDescription = "Stop recording",
+                            tint = Color(0xFFFF5252),
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
                 }
             }
-        }
 
-        // Quick Prompt Suggestions
-        QuickPromptChips(
-            onPromptSelected = { prompt ->
-                viewModel.setInputText(prompt)
-                viewModel.sendMessage(prompt)
-            }
-        )
-
-        // Bottom Input Container
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(CyberSurfaceDark)
-                .border(1.dp, CyberBorder.copy(alpha = 0.5f), RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-                .padding(horizontal = 12.dp, vertical = 8.dp)
-        ) {
-            // Selected Image Preview if attached
+            // Attached Image Thumbnail Preview
             if (uiState.selectedImageBitmap != null) {
                 Box(
                     modifier = Modifier
-                        .padding(bottom = 8.dp)
-                        .size(64.dp)
+                        .padding(top = 8.dp)
+                        .size(56.dp)
                         .clip(RoundedCornerShape(8.dp))
-                        .border(1.dp, NeonCyan, RoundedCornerShape(8.dp))
+                        .border(1.dp, Color.White.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
                 ) {
                     Image(
                         bitmap = uiState.selectedImageBitmap.asImageBitmap(),
-                        contentDescription = "Selected Image",
+                        contentDescription = "Attached visual",
                         modifier = Modifier.fillMaxSize()
                     )
                     IconButton(
                         onClick = { viewModel.setSelectedImage(null) },
                         modifier = Modifier
                             .align(Alignment.TopEnd)
-                            .size(20.dp)
-                            .background(ObsidianBlack.copy(alpha = 0.8f), CircleShape)
+                            .size(18.dp)
+                            .background(Color.Black.copy(alpha = 0.7f), CircleShape)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Remove Image",
                             tint = Color.White,
-                            modifier = Modifier.size(12.dp)
+                            modifier = Modifier.size(10.dp)
                         )
                     }
                 }
             }
 
-            // Input Row
+            // Quick Prompt Chips
+            QuickPromptChips(
+                onPromptSelected = { prompt ->
+                    viewModel.setInputText(prompt)
+                    viewModel.sendMessage(prompt)
+                }
+            )
+
+            // Chat Input Row matching .chat-input in HTML: gap 10px, pill input, orange Send button
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // Attach Media Button (Android Photo Picker)
+                // Media attachment (Android Photo Picker)
                 IconButton(
                     onClick = {
                         photoPickerLauncher.launch(
@@ -453,21 +365,19 @@ fun ChatWorkspace(
                         )
                     },
                     modifier = Modifier
-                        .size(40.dp)
+                        .size(38.dp)
                         .clip(CircleShape)
-                        .background(CyberSurfaceElevated)
-                        .border(1.dp, CyberBorder, CircleShape)
+                        .background(Color.White.copy(alpha = 0.15f))
+                        .border(0.5.dp, Color.White.copy(alpha = 0.3f), CircleShape)
                         .testTag("attach_photo_button")
                 ) {
                     Icon(
                         imageVector = Icons.Default.AddPhotoAlternate,
-                        contentDescription = "Attach image for vision",
-                        tint = if (uiState.selectedImageBitmap != null) NeonCyan else TextSecondaryDark,
+                        contentDescription = "Attach image",
+                        tint = if (uiState.selectedImageBitmap != null) SendButtonOrange else Color.White,
                         modifier = Modifier.size(18.dp)
                     )
                 }
-
-                Spacer(modifier = Modifier.width(6.dp))
 
                 // Voice Recording Button
                 IconButton(
@@ -484,60 +394,44 @@ fun ChatWorkspace(
                         }
                     },
                     modifier = Modifier
-                        .size(40.dp)
+                        .size(38.dp)
                         .clip(CircleShape)
-                        .background(if (uiState.isRecordingVoice) NeonCyan.copy(alpha = 0.2f) else CyberSurfaceElevated)
-                        .border(1.dp, if (uiState.isRecordingVoice) NeonCyan else CyberBorder, CircleShape)
+                        .background(if (uiState.isRecordingVoice) SendButtonOrange.copy(alpha = 0.3f) else Color.White.copy(alpha = 0.15f))
+                        .border(0.5.dp, Color.White.copy(alpha = 0.3f), CircleShape)
                         .testTag("voice_record_button")
                 ) {
                     Icon(
                         imageVector = if (uiState.isRecordingVoice) Icons.Default.MicOff else Icons.Default.Mic,
                         contentDescription = "Voice Input",
-                        tint = if (uiState.isRecordingVoice) Color(0xFFF43F5E) else TextSecondaryDark,
+                        tint = if (uiState.isRecordingVoice) Color(0xFFFF5252) else Color.White,
                         modifier = Modifier.size(18.dp)
                     )
                 }
 
-                Spacer(modifier = Modifier.width(6.dp))
-
-                // Text Field with neon cyber border
+                // Input Pill matching input: flex 1, padding 10px, border-radius 20px, background rgba(255,255,255,0.2)
                 Box(
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(20.dp))
-                        .background(CyberSurfaceElevated)
-                        .border(
-                            width = 1.dp,
-                            brush = Brush.horizontalGradient(
-                                colors = listOf(
-                                    if (uiState.isThinkingMode) NeonIndigo.copy(alpha = 0.5f) else NeonCyan.copy(alpha = 0.3f),
-                                    CyberBorder
-                                )
-                            ),
-                            shape = RoundedCornerShape(20.dp)
-                        )
+                        .background(GlassInputBackground)
+                        .border(1.dp, Color.White.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
+                        .padding(horizontal = 14.dp, vertical = 10.dp)
                 ) {
-                    TextField(
+                    if (uiState.inputText.isEmpty()) {
+                        Text(
+                            text = "Type your message...",
+                            fontSize = 14.sp,
+                            color = Color.White.copy(alpha = 0.6f)
+                        )
+                    }
+                    BasicTextField(
                         value = uiState.inputText,
                         onValueChange = { viewModel.setInputText(it) },
-                        placeholder = {
-                            Text(
-                                text = if (uiState.isThinkingMode) "Ask deep reasoning query..." else "Ask or speak to Gangstream...",
-                                fontSize = 13.sp,
-                                color = TextMutedDark
-                            )
-                        },
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.Transparent,
-                            unfocusedContainerColor = Color.Transparent,
-                            disabledContainerColor = Color.Transparent,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
-                            focusedTextColor = TextPrimaryDark,
-                            unfocusedTextColor = TextPrimaryDark,
-                            cursorColor = NeonCyan
+                        textStyle = TextStyle(
+                            fontSize = 14.sp,
+                            color = Color.White
                         ),
-                        maxLines = 4,
+                        cursorBrush = SolidColor(Color.White),
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
                         keyboardActions = KeyboardActions(
                             onSend = {
@@ -549,42 +443,55 @@ fun ChatWorkspace(
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .testTag("chat_input_textfield")
+                            .testTag("user_input")
                     )
                 }
 
-                Spacer(modifier = Modifier.width(6.dp))
-
-                // Send Button with neon gradient
+                // Send Button matching button: padding 10px 20px, border-radius 20px, background #FF5722, hover #E64A19
                 val canSend = uiState.inputText.isNotBlank() || uiState.selectedImageBitmap != null
-                IconButton(
-                    onClick = {
-                        if (canSend && !uiState.isGenerating) {
-                            focusManager.clearFocus()
-                            viewModel.sendMessage()
-                        }
-                    },
-                    enabled = canSend && !uiState.isGenerating,
+                val sendInteractionSource = remember { MutableInteractionSource() }
+                val isSendPressed by sendInteractionSource.collectIsPressedAsState()
+
+                Box(
                     modifier = Modifier
-                        .size(42.dp)
-                        .clip(CircleShape)
+                        .clip(RoundedCornerShape(20.dp))
                         .background(
-                            if (canSend) Brush.linearGradient(listOf(NeonCyan, NeonElectricBlue))
-                            else Brush.linearGradient(listOf(CyberSurfaceElevated, CyberSurfaceDark))
+                            if (!canSend) SendButtonOrange.copy(alpha = 0.5f)
+                            else if (isSendPressed) SendButtonOrangeHover
+                            else SendButtonOrange
                         )
-                        .border(
-                            1.dp,
-                            if (canSend) NeonCyan else CyberBorder,
-                            CircleShape
-                        )
-                        .testTag("send_message_button")
+                        .clickable(
+                            interactionSource = sendInteractionSource,
+                            indication = null,
+                            enabled = canSend && !uiState.isGenerating
+                        ) {
+                            if (canSend && !uiState.isGenerating) {
+                                focusManager.clearFocus()
+                                viewModel.sendMessage()
+                            }
+                        }
+                        .padding(horizontal = 16.dp, vertical = 10.dp)
+                        .testTag("send_button"),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.Send,
-                        contentDescription = "Send transmission",
-                        tint = if (canSend) ObsidianBlack else TextMutedDark,
-                        modifier = Modifier.size(18.dp)
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = "Send",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Send,
+                            contentDescription = "Send",
+                            tint = Color.White,
+                            modifier = Modifier.size(14.dp)
+                        )
+                    }
                 }
             }
         }

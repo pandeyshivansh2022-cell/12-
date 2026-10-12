@@ -42,8 +42,8 @@ fun GangstreamTheme(
         SideEffect {
             val window = (view.context as? Activity)?.window
             if (window != null) {
-                window.statusBarColor = ObsidianBlack.toArgb()
-                window.navigationBarColor = ObsidianBlack.toArgb()
+                window.statusBarColor = GradientStartPurple.toArgb()
+                window.navigationBarColor = GradientEndPurple.toArgb()
                 WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
                 WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = false
             }

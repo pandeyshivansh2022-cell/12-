@@ -78,7 +78,7 @@ fun GangstreamHeader(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        color = ObsidianBlack,
+        color = Color.Transparent,
         modifier = modifier
             .fillMaxWidth()
             .statusBarsPadding()
@@ -144,7 +144,7 @@ fun GangstreamHeader(
                             )
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(
-                                text = if (uiState.isGenerating) "NEURAL PROCESSING..." else "G-STREAM // ACTIVE",
+                                text = if (uiState.isGenerating) "NEURAL PROCESSING..." else if (uiState.useCustomBackend) "EXPRESS // DIALOGFLOW" else "G-STREAM // ACTIVE",
                                 fontSize = 10.sp,
                                 color = if (uiState.isGenerating) NeonCyan else TextSecondaryDark,
                                 letterSpacing = 0.8.sp,
@@ -272,7 +272,7 @@ fun GangstreamHeader(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = "${uiState.selectedPersona.displayName} • ${uiState.selectedModel}",
+                        text = if (uiState.useCustomBackend) "Dialogflow Backend • /api/chat" else "${uiState.selectedPersona.displayName} • ${uiState.selectedModel}",
                         fontSize = 11.sp,
                         color = TextSecondaryDark,
                         fontWeight = FontWeight.Medium

@@ -46,7 +46,12 @@ data class WorkspaceUiState(
     // Voice studio
     val isListening: Boolean = false,
     val voiceSpeed: Float = 1.0f,
-    val selectedVoiceName: String = "Kore"
+    val selectedVoiceName: String = "Kore",
+    // Custom Express / Dialogflow backend
+    val useCustomBackend: Boolean = false,
+    val customBackendUrl: String = "http://10.0.2.2:3000",
+    val backendStatus: String? = null,
+    val isCheckingBackend: Boolean = false
 )
 
 enum class WorkspaceTab {
@@ -274,6 +279,9 @@ class GangstreamViewModel(application: Application) : AndroidViewModel(applicati
         val search = _uiState.value.isSearchGrounding
         val pastMsgs = currentMessages.value
 
+        val useCustomBackend = _uiState.value.useCustomBackend
+        val backendUrl = _uiState.value.customBackendUrl
+
         _uiState.value = _uiState.value.copy(
             inputText = "",
             selectedImageBitmap = null,
@@ -291,13 +299,40 @@ class GangstreamViewModel(application: Application) : AndroidViewModel(applicati
                     modelName = model,
                     enableThinking = thinking,
                     enableSearchGrounding = search,
-                    pastMessages = pastMsgs
+                    pastMessages = pastMsgs,
+                    useCustomBackend = useCustomBackend,
+                    backendUrl = backendUrl
                 )
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(errorMessage = e.message)
             } finally {
                 _uiState.value = _uiState.value.copy(isGenerating = false)
             }
+        }
+    }
+
+    fun toggleCustomBackend() {
+        _uiState.value = _uiState.value.copy(
+            useCustomBackend = !_uiState.value.useCustomBackend
+        )
+    }
+
+    fun setCustomBackendUrl(url: String) {
+        _uiState.value = _uiState.value.copy(
+            customBackendUrl = url,
+            backendStatus = null
+        )
+    }
+
+    fun testBackendConnection() {
+        val url = _uiState.value.customBackendUrl
+        _uiState.value = _uiState.value.copy(isCheckingBackend = true, backendStatus = "Connecting...")
+        viewModelScope.launch {
+            val (isOk, msg) = repository.checkBackendHealth(url)
+            _uiState.value = _uiState.value.copy(
+                isCheckingBackend = false,
+                backendStatus = if (isOk) "Online: $msg" else "Offline: $msg"
+            )
         }
     }
 
@@ -344,15 +379,29 @@ class GangstreamViewModel(application: Application) : AndroidViewModel(applicati
         if (prompt.isEmpty()) return
         val type = _uiState.value.visualType
         val ratio = _uiState.value.visualAspectRatio
+        val useCustom = _uiState.value.useCustomBackend
+        val backendUrl = _uiState.value.customBackendUrl
+        val cacheDir = getApplication<Application>().cacheDir
 
         _uiState.value = _uiState.value.copy(isGeneratingVisual = true, visualError = null)
 
         viewModelScope.launch {
             try {
                 if (type == "IMAGE") {
-                    repository.generateImage(prompt, ratio)
+                    repository.generateImage(
+                        prompt = prompt,
+                        aspectRatio = ratio,
+                        useCustomBackend = useCustom,
+                        backendUrl = backendUrl
+                    )
                 } else {
-                    repository.generateVideoPrompt(prompt, ratio)
+                    repository.generateVideoPrompt(
+                        prompt = prompt,
+                        aspectRatio = ratio,
+                        useCustomBackend = useCustom,
+                        backendUrl = backendUrl,
+                        cacheDir = cacheDir
+                    )
                 }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(visualError = e.message)

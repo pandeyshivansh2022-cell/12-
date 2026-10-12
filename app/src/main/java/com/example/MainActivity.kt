@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
             GangstreamTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = ObsidianBlack
+                    color = androidx.compose.ui.graphics.Color.Transparent
                 ) {
                     WorkspaceScreen(viewModel = viewModel)
                 }

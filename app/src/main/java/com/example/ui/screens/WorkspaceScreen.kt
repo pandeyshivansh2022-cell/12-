@@ -47,6 +47,8 @@ import com.example.ui.theme.CyberSurfaceDark
 import com.example.ui.theme.CyberSurfaceElevated
 import com.example.ui.theme.NeonCyan
 import com.example.ui.theme.NeonElectricBlue
+import com.example.ui.theme.GradientStartPurple
+import com.example.ui.theme.GradientEndPurple
 import com.example.ui.theme.ObsidianBlack
 import com.example.ui.theme.TextMutedDark
 import com.example.ui.theme.TextSecondaryDark
@@ -62,8 +64,12 @@ fun WorkspaceScreen(
     Scaffold(
         modifier = modifier
             .fillMaxSize()
-            .background(ObsidianBlack),
-        containerColor = ObsidianBlack,
+            .background(
+                androidx.compose.ui.graphics.Brush.linearGradient(
+                    listOf(GradientStartPurple, GradientEndPurple)
+                )
+            ),
+        containerColor = Color.Transparent,
         topBar = {
             GangstreamHeader(
                 uiState = uiState,
@@ -201,7 +207,7 @@ fun WorkspaceScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .background(ObsidianBlack)
+                .background(Color.Transparent)
         ) {
             when (uiState.activeTab) {
                 WorkspaceTab.CHAT -> ChatWorkspace(viewModel = viewModel, uiState = uiState)
@@ -225,6 +231,9 @@ fun WorkspaceScreen(
                 },
                 onToggleThinking = { viewModel.toggleThinkingMode() },
                 onToggleSearch = { viewModel.toggleSearchGrounding() },
+                onToggleCustomBackend = { viewModel.toggleCustomBackend() },
+                onCustomBackendUrlChanged = { viewModel.setCustomBackendUrl(it) },
+                onTestBackendConnection = { viewModel.testBackendConnection() },
                 onDismiss = { showModelSelector = false }
             )
         }
