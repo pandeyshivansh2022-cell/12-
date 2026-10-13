@@ -1,0 +1,9 @@
+{
+  "name": "gangstream-ai-web",
+  "version": "1.0.0",
+  "description": "Gangstream AI Web Application and API server",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  }
+}

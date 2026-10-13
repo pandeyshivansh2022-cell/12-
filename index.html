@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gangstream AI — Next-Gen Intelligence</title>
+    <meta name="description" content="Gangstream AI is a futuristic cybernetic AI workspace featuring multi-turn Gemini 3.5 chat, Web Speech voice synthesis & dictation, interactive visual studio, and cinematic video storyboard generator optimized for Google Chrome.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23667eea'/><stop offset='100%' stop-color='%23764ba2'/></linearGradient></defs><circle cx='50' cy='50' r='46' fill='url(%23g)' stroke='%2300f2fe' stroke-width='3'/><text x='50%' y='60%' font-size='46' font-family='sans-serif' font-weight='900' fill='white' text-anchor='middle'>G</text></svg>">
+    
+    <style>
+        :root {
+            --gradient-main: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.22);
+            --glass-card: rgba(18, 22, 34, 0.55);
+            --user-green: #4CAF50;
+            --user-green-hover: #43A047;
+            --bot-blue: #2196F3;
+            --bot-blue-hover: #1E88E5;
+            --accent-orange: #FF5722;
+            --accent-orange-hover: #E64A19;
+            --cyan-glow: #00f2fe;
+            --neon-purple: #9d4edd;
+            --text-main: #FFFFFF;
+            --text-sub: rgba(255, 255, 255, 0.78);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --card-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background: var(--gradient-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Subtle cybernetic grid backdrop */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 36px 36px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Top Header */
+        header.site-header {
+            position: relative;
+            z-index: 10;
+            background: rgba(15, 18, 30, 0.45);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #00f2fe 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 16px rgba(0, 242, 254, 0.4);
+            font-weight: 900;
+            font-size: 20px;
+            color: #fff;
+            user-select: none;
+        }
+
+        .brand-text h1 {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-text .status-badge {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 2px 7px;
+            border-radius: 20px;
+            background: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 8px #10B981;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.8; }
+        }
+
+        .chrome-tag {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.12);
+            padding: 4px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Navigation tabs */
+        nav.nav-tabs {
+            display: flex;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 4px;
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-sub);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-btn.active {
+            color: #fff;
+            background: var(--bot-blue);
+            box-shadow: 0 2px 10px rgba(33, 150, 243, 0.4);
+        }
+
+        /* Main Workspace Container */
+        main.workspace {
+            position: relative;
+            z-index: 5;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 20px 16px 40px;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .tab-content {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.25s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glassmorphism Panel */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-radius);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- TAB 1: CHAT WORKSPACE --- */
+        .chat-layout {
+            height: calc(100vh - 150px);
+            min-height: 580px;
+            max-height: 780px;
+        }
+
+        .chat-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .persona-selector {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 3px 8px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .persona-selector span {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .persona-selector select {
+            background: transparent;
+            color: #fff;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .persona-selector select option {
+            background: #1a1e2e;
+            color: #fff;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-tiny {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-tiny:hover {
+            background: rgba(255, 255, 255, 0.28);
+        }
+
+        /* Chat Messages Container */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            padding: 16px;
+            border-radius: 14px;
+            background: rgba(0, 0, 0, 0.22);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            scroll-behavior: smooth;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        .message-row {
+            display: flex;
+            width: 100%;
+        }
+
+        .message-row.user-row {
+            justify-content: flex-end;
+        }
+
+        .message-row.bot-row {
+            justify-content: flex-start;
+        }
+
+        .message {
+            padding: 12px 18px;
+            border-radius: 16px;
+            max-width: 82%;
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            animation: bubbleIn 0.22s ease-out;
+            position: relative;
+        }
+
+        @keyframes bubbleIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            background: var(--user-green);
+            border-bottom-right-radius: 2px;
+            color: #fff;
+        }
+
+        .bot-message {
+            background: var(--bot-blue);
+            border-bottom-left-radius: 2px;
+            color: #fff;
+        }
+
+        .message-meta {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .msg-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .msg-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Quick prompt chips */
+        .quick-chips {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+        }
+
+        .quick-chip {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .quick-chip:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Input deck */
+        .chat-input-bar {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            width: 44px;
+            height: 44px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.16);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .icon-btn.recording {
+            background: #E53935;
+            animation: pulse-mic 1s infinite;
+        }
+
+        @keyframes pulse-mic {
+            0% { transform: scale(1); box-shadow: 0 0 0 rgba(229, 57, 53, 0.5); }
+            50% { transform: scale(1.1); box-shadow: 0 0 16px rgba(229, 57, 53, 0.9); }
+            100% { transform: scale(1); box-shadow: 0 0 0 rgba(229, 57, 53, 0.5); }
+        }
+
+        .chat-input-bar input {
+            flex: 1;
+            padding: 13px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 26px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.18);
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .chat-input-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        .chat-input-bar input:focus {
+            background: rgba(255, 255, 255, 0.28);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 14px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-send {
+            padding: 13px 24px;
+            border: none;
+            border-radius: 26px;
+            background: var(--accent-orange);
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 14px rgba(255, 87, 34, 0.35);
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .btn-send:hover {
+            background: var(--accent-orange-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(255, 87, 34, 0.5);
+        }
+
+        .btn-send:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: inline-flex;
+            gap: 5px;
+            padding: 8px 14px;
+            border-radius: 14px;
+            background: rgba(33, 150, 243, 0.85);
+            color: white;
+            font-size: 12px;
+            align-items: center;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            animation: bounce 1.2s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+        }
+
+        /* --- TAB 2: VISUAL ART STUDIO --- */
+        .studio-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 820px) {
+            .studio-grid {
+                grid-template-columns: 1fr;
+            }
+            .chat-layout {
+                height: calc(100vh - 180px);
+            }
+        }
+
+        .studio-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            background: rgba(0, 0, 0, 0.28);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: #fff;
+            padding: 10px 14px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .style-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .style-pill {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 14px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .style-pill.active {
+            background: var(--bot-blue);
+            border-color: #00f2fe;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+        }
+
+        .studio-preview {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 320px;
+            position: relative;
+        }
+
+        .art-container {
+            width: 100%;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0d1117;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+        }
+
+        .art-container svg {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .palette-chips {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .palette-chip {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* --- TAB 3: VIDEO STORYBOARD STUDIO --- */
+        .storyboard-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 14px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        .scene-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 14px;
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 14px;
+            transition: all 0.2s;
+        }
+
+        .scene-card:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .scene-badge {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6px;
+        }
+
+        .scene-badge .num {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--cyan-glow);
+        }
+
+        .scene-badge .sec {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .scene-details h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .scene-details p {
+            font-size: 12px;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+
+        .scene-tags {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+
+        .scene-tag {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-sub);
+        }
+
+        /* --- TAB 4: VOICE STUDIO --- */
+        .voice-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 780px) {
+            .voice-dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .voice-box {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .voice-box h3 {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            padding-bottom: 8px;
+        }
+
+        canvas#audio-visualizer {
+            width: 100%;
+            height: 70px;
+            background: #0b0f19;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Footer */
+        footer.site-footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 14px 20px;
+            background: rgba(15, 18, 30, 0.5);
+            border-top: 1px solid var(--glass-border);
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+
+        footer.site-footer a {
+            color: #00f2fe;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Header -->
+    <header class="site-header">
+        <div class="brand-container">
+            <div class="brand-logo">G</div>
+            <div class="brand-text">
+                <h1>
+                    <span>Gangstream AI</span>
+                    <span class="status-badge"><span class="status-dot"></span> LIVE // GEMINI 3.5</span>
+                </h1>
+            </div>
+        </div>
+
+        <nav class="nav-tabs" role="tablist">
+            <button class="tab-btn active" onclick="switchTab('tab-chat')" id="btn-tab-chat">💬 Chat AI</button>
+            <button class="tab-btn" onclick="switchTab('tab-visual')" id="btn-tab-visual">🎨 Visual Studio</button>
+            <button class="tab-btn" onclick="switchTab('tab-video')" id="btn-tab-video">🎬 Video Studio</button>
+            <button class="tab-btn" onclick="switchTab('tab-voice')" id="btn-tab-voice">🎙️ Voice & Audio</button>
+            <button class="tab-btn" onclick="switchTab('tab-history')" id="btn-tab-history">📜 History</button>
+        </nav>
+
+        <div class="chrome-tag">
+            <span>⚡ Google Chrome Optimized</span>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="workspace">
+
+        <!-- ================= TAB 1: CHAT AI WORKSPACE ================= -->
+        <section id="tab-chat" class="tab-content active">
+            <div class="glass-panel chat-layout">
+                <div class="chat-topbar">
+                    <div class="persona-selector">
+                        <span>Persona:</span>
+                        <select id="chat-persona">
+                            <option value="general">Cybernetic Assistant (General)</option>
+                            <option value="coder">Code & Tech Architect</option>
+                            <option value="creative">Futuristic Poet & Visionary</option>
+                            <option value="director">Creative Media Director</option>
+                        </select>
+                    </div>
+
+                    <div class="chat-actions">
+                        <button class="btn-tiny" onclick="clearCurrentChat()">🗑️ Clear</button>
+                        <button class="btn-tiny" onclick="exportChatTranscript()">📥 Export</button>
+                    </div>
+                </div>
+
+                <!-- Messages Feed -->
+                <div class="chat-messages" id="chat-messages">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <!-- Quick Prompt Chips -->
+                <div class="quick-chips">
+                    <button class="quick-chip" onclick="sendQuickPrompt('What are all the capabilities of Gangstream AI?')">⚡ Capabilities</button>
+                    <button class="quick-chip" onclick="sendQuickPrompt('Write a futuristic cybernetic poem about streaming intelligence.')">🚀 Cyber Poem</button>
+                    <button class="quick-chip" onclick="sendQuickPrompt('How do you connect Dialogflow, Gemini 3.5, and Node.js?')">🧠 Architecture</button>
+                    <button class="quick-chip" onclick="sendQuickPrompt('Provide an optimal Jetpack Compose code structure for Android.')">💻 Android Tech</button>
+                    <button class="quick-chip" onclick="sendQuickPrompt('Brainstorm a viral cinematic sci-fi video concept.')">🎬 Video Idea</button>
+                </div>
+
+                <!-- Input Deck -->
+                <div class="chat-input-bar">
+                    <button class="icon-btn" id="mic-button" title="Voice Input (Chrome Speech-to-Text)">🎙️</button>
+                    <input type="text" id="user-input" placeholder="Type your message or click 🎙️ to speak..." autocomplete="off">
+                    <button class="btn-send" id="send-button">
+                        <span>Send</span>
+                        <span>➔</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: VISUAL ART STUDIO ================= -->
+        <section id="tab-visual" class="tab-content">
+            <div class="glass-panel">
+                <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 6px;">🎨 Visual Art & Vector Studio</h2>
+                <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 20px;">
+                    Generate cybernetic artwork, vector illustrations, and high-definition color palettes rendered directly in Google Chrome.
+                </p>
+
+                <div class="studio-grid">
+                    <div class="studio-controls">
+                        <div class="form-group">
+                            <label>Art Prompt</label>
+                            <textarea id="art-prompt" placeholder="e.g., Cyberpunk neon skyline with floating holograms, rain reflections, and glowing violet spires..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Visual Style</label>
+                            <div class="style-pills" id="art-styles">
+                                <button class="style-pill active" data-style="cyberpunk">Cyberpunk Neon</button>
+                                <button class="style-pill" data-style="synthwave">80s Synthwave</button>
+                                <button class="style-pill" data-style="hologram">3D Holographic</button>
+                                <button class="style-pill" data-style="vector">Minimalist Vector</button>
+                                <button class="style-pill" data-style="anime">Futuristic Anime</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Aspect Ratio</label>
+                            <select id="art-aspect">
+                                <option value="1:1">1:1 Square (1080x1080)</option>
+                                <option value="16:9">16:9 Widescreen (1920x1080)</option>
+                                <option value="9:16">9:16 Vertical Story (1080x1920)</option>
+                            </select>
+                        </div>
+
+                        <button class="btn-send" id="btn-generate-art" onclick="generateVisualArt()" style="justify-content: center; width: 100%;">
+                            <span>⚡ Generate Artwork</span>
+                        </button>
+                    </div>
+
+                    <div class="studio-preview">
+                        <div class="art-container" id="art-display">
+                            <div style="text-align: center; color: var(--text-muted); padding: 20px;">
+                                <div style="font-size: 40px; margin-bottom: 10px;">✨</div>
+                                <p style="font-size: 13px;">Enter a prompt & click Generate Artwork</p>
+                            </div>
+                        </div>
+
+                        <div class="palette-chips" id="palette-display" style="display: none;"></div>
+
+                        <div style="margin-top: 14px; display: flex; gap: 8px; width: 100%; justify-content: center;">
+                            <button class="btn-tiny" id="btn-download-svg" style="display: none;" onclick="downloadSvgArt()">💾 Download SVG</button>
+                            <button class="btn-tiny" id="btn-copy-svg" style="display: none;" onclick="copySvgCode()">📋 Copy Code</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: VIDEO STORYBOARD STUDIO ================= -->
+        <section id="tab-video" class="tab-content">
+            <div class="glass-panel">
+                <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 6px;">🎬 Video Script & Storyboard Studio</h2>
+                <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 20px;">
+                    Generate multi-scene video concepts with camera angles, shot durations, audio cues, and lighting moods matching the Gangstream AI video engine.
+                </p>
+
+                <div class="studio-grid">
+                    <div class="studio-controls">
+                        <div class="form-group">
+                            <label>Video Concept</label>
+                            <textarea id="video-prompt" placeholder="e.g., A high-speed cybernetic drone delivering encrypted intelligence through neon-lit futuristic skyscrapers..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Target Duration: <span id="duration-val" style="color: var(--cyan-glow); font-weight: 800;">15s</span></label>
+                            <input type="range" id="video-duration" min="5" max="60" value="15" step="5" oninput="document.getElementById('duration-val').innerText = this.value + 's'">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Cinematic Tone</label>
+                            <select id="video-style">
+                                <option value="cinematic sci-fi">Cinematic Sci-Fi (Anamorphic / High Contrast)</option>
+                                <option value="commercial reel">Dynamic Viral Commercial (Fast Paced / Energetic)</option>
+                                <option value="anime intro">Cyber Anime Opening (Vibrant / Dramatic)</option>
+                                <option value="documentary">Futuristic Tech Documentary (Analytical / Sleek)</option>
+                            </select>
+                        </div>
+
+                        <button class="btn-send" id="btn-generate-video" onclick="generateVideoScript()" style="justify-content: center; width: 100%;">
+                            <span>🎬 Generate Storyboard</span>
+                        </button>
+                    </div>
+
+                    <div class="studio-preview" style="justify-content: flex-start; align-items: stretch;">
+                        <h3 id="video-title-display" style="font-size: 15px; margin-bottom: 8px; color: var(--cyan-glow);">Storyboard Timeline</h3>
+                        <p id="video-logline-display" style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">Waiting for script generation...</p>
+
+                        <div class="storyboard-timeline" id="storyboard-list">
+                            <!-- Storyboard scene cards populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: VOICE STUDIO ================= -->
+        <section id="tab-voice" class="tab-content">
+            <div class="glass-panel">
+                <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 6px;">🎙️ Chrome Voice & Audio Lab</h2>
+                <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 20px;">
+                    Experience Google Chrome's native Web Speech synthesis, voice recognition, and real-time audio wave visualization.
+                </p>
+
+                <div class="voice-dashboard">
+                    <!-- Text to Speech -->
+                    <div class="voice-box">
+                        <h3>🔊 Neural Speech Synthesis</h3>
+                        
+                        <div class="form-group">
+                            <label>Chrome Voice</label>
+                            <select id="voice-select"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Speech Rate / Speed: <span id="rate-label">1.0x</span></label>
+                            <input type="range" id="voice-rate" min="0.5" max="2" value="1.0" step="0.1" oninput="document.getElementById('rate-label').innerText = this.value + 'x'">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Pitch: <span id="pitch-label">1.0</span></label>
+                            <input type="range" id="voice-pitch" min="0.5" max="2" value="1.0" step="0.1" oninput="document.getElementById('pitch-label').innerText = this.value">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Test Phrase</label>
+                            <textarea id="tts-input" style="min-height: 60px;">Greetings. Gangstream AI neural synthesis is online and tuned to optimal frequency.</textarea>
+                        </div>
+
+                        <canvas id="audio-visualizer"></canvas>
+
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn-send" onclick="playVoiceTest()" style="flex: 1; justify-content: center;">
+                                <span>🔊 Play Speech</span>
+                            </button>
+                            <button class="btn-tiny" onclick="window.speechSynthesis.cancel()" style="padding: 10px 16px;">⏹️ Stop</button>
+                        </div>
+                    </div>
+
+                    <!-- Speech to Text -->
+                    <div class="voice-box">
+                        <h3>🎙️ Chrome Speech Recognition</h3>
+                        <p style="font-size: 12px; color: var(--text-sub);">
+                            Speak directly into your microphone. Google Chrome transcribes speech in real time with zero latency.
+                        </p>
+
+                        <div style="display: flex; justify-content: center; padding: 20px 0;">
+                            <button class="icon-btn" id="voice-lab-mic" onclick="toggleLabMic()" style="width: 72px; height: 72px; font-size: 32px;">🎙️</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Live Transcription Output</label>
+                            <div id="stt-output" style="background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px; min-height: 80px; font-size: 13px; color: var(--text-main);">
+                                Click the microphone above and begin speaking...
+                            </div>
+                        </div>
+
+                        <button class="btn-tiny" onclick="transferSTTToChat()" style="padding: 10px; font-weight: 600;">
+                            ➡️ Transfer Text to Chat AI
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 5: HISTORY & ARCHIVE ================= -->
+        <section id="tab-history" class="tab-content">
+            <div class="glass-panel">
+                <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 6px;">📜 Session Archive & Chat Logs</h2>
+                <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 16px;">
+                    Review past queries, export conversation archives, or manage local storage.
+                </p>
+
+                <div style="margin-bottom: 14px; display: flex; gap: 8px;">
+                    <button class="btn-tiny" onclick="exportChatTranscript()">📥 Download JSON Archive</button>
+                    <button class="btn-tiny" onclick="clearCurrentChat()">🗑️ Reset Current Conversation</button>
+                </div>
+
+                <div id="history-container" style="display: flex; flex-direction: column; gap: 10px; max-height: 480px; overflow-y: auto;">
+                    <!-- History items rendered here -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>Gangstream AI • Engineered for Google Chrome • Powered by Gemini 3.5 & Web Speech Engine</p>
+    </footer>
+
+    <!-- Client-Side Application Logic -->
+    <script>
+        // Tab switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            const targetTab = document.getElementById(tabId);
+            if (targetTab) targetTab.classList.add('active');
+
+            const tabBtn = document.getElementById('btn-' + tabId);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            if (tabId === 'tab-history') {
+                renderHistoryTab();
+            }
+        }
+
+        // Style pills selection
+        document.querySelectorAll('#art-styles .style-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#art-styles .style-pill').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // Chat state
+        let conversationHistory = [];
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+        const micButton = document.getElementById('mic-button');
+        const personaSelect = document.getElementById('chat-persona');
+
+        // Load chat from localStorage
+        function loadSavedChat() {
+            try {
+                const saved = localStorage.getItem('gangstream_chat_history');
+                if (saved) {
+                    conversationHistory = JSON.parse(saved);
+                    conversationHistory.forEach(msg => addMessageDOM(msg.text, msg.role === 'user', false));
+                }
+            } catch (e) {
+                console.warn('Error loading chat history:', e);
+            }
+
+            if (conversationHistory.length === 0) {
+                addMessage("Hello! How can I assist you today?", false, true);
+            }
+        }
+
+        function saveChat() {
+            try {
+                localStorage.setItem('gangstream_chat_history', JSON.stringify(conversationHistory));
+            } catch (e) {
+                console.warn('Error saving chat:', e);
+            }
+        }
+
+        // Add message helper
+        function addMessage(text, isUser = false, save = true) {
+            if (save) {
+                conversationHistory.push({
+                    role: isUser ? 'user' : 'model',
+                    text: text,
+                    timestamp: new Date().toISOString()
+                });
+                saveChat();
+            }
+            addMessageDOM(text, isUser);
+        }
+
+        function addMessageDOM(text, isUser = false) {
+            const row = document.createElement('div');
+            row.className = `message-row ${isUser ? 'user-row' : 'bot-row'}`;
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            messageDiv.textContent = text;
+
+            const meta = document.createElement('div');
+            meta.className = 'message-meta';
+            const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            meta.innerHTML = `<span>${isUser ? 'YOU' : 'GANGSTREAM AI'} • ${timeStr}</span>`;
+
+            const actionsDiv = document.createElement('div');
+            actionsDiv.style.display = 'flex';
+            actionsDiv.style.gap = '4px';
+
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'msg-btn';
+            copyBtn.textContent = '📋 Copy';
+            copyBtn.onclick = () => {
+                navigator.clipboard.writeText(text);
+                copyBtn.textContent = '✓ Copied';
+                setTimeout(() => copyBtn.textContent = '📋 Copy', 1500);
+            };
+            actionsDiv.appendChild(copyBtn);
+
+            if (!isUser) {
+                const speakBtn = document.createElement('button');
+                speakBtn.className = 'msg-btn';
+                speakBtn.textContent = '🔊 Read';
+                speakBtn.onclick = () => speakText(text);
+                actionsDiv.appendChild(speakBtn);
+            }
+
+            meta.appendChild(actionsDiv);
+            messageDiv.appendChild(meta);
+            row.appendChild(messageDiv);
+            chatMessages.appendChild(row);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Typing indicator
+        let typingElement = null;
+        function showTypingIndicator() {
+            if (typingElement) return;
+            typingElement = document.createElement('div');
+            typingElement.className = 'message-row bot-row';
+            typingElement.innerHTML = `
+                <div class="typing-indicator">
+                    <span>Gangstream is reasoning</span>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            chatMessages.appendChild(typingElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            if (typingElement) {
+                typingElement.remove();
+                typingElement = null;
+            }
+        }
+
+        // Send message to server
+        async function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            addMessage(text, true);
+            userInput.value = '';
+            sendButton.disabled = true;
+            showTypingIndicator();
+
+            try {
+                const persona = personaSelect.value;
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: text,
+                        persona: persona,
+                        history: conversationHistory.slice(-8)
+                    })
+                });
+
+                hideTypingIndicator();
+                sendButton.disabled = false;
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                addMessage(data.response || "No response received.");
+            } catch (err) {
+                hideTypingIndicator();
+                sendButton.disabled = false;
+                console.error(err);
+                addMessage("⚠️ Failed to connect to Gangstream intelligence core. Please check connection.");
+            }
+        }
+
+        function sendQuickPrompt(promptText) {
+            userInput.value = promptText;
+            sendMessage();
+        }
+
+        function clearCurrentChat() {
+            if (confirm("Reset conversation?")) {
+                conversationHistory = [];
+                localStorage.removeItem('gangstream_chat_history');
+                chatMessages.innerHTML = '';
+                addMessage("Hello! How can I assist you today?", false, true);
+            }
+        }
+
+        function exportChatTranscript() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(conversationHistory, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `gangstream_chat_${Date.now()}.json`);
+            dlAnchor.click();
+        }
+
+        // Web Speech API: Text-to-Speech
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                const voiceSelect = document.getElementById('voice-select');
+                if (voiceSelect && voiceSelect.value) {
+                    const voices = window.speechSynthesis.getVoices();
+                    const selected = voices.find(v => v.name === voiceSelect.value);
+                    if (selected) utterance.voice = selected;
+                }
+                const rate = parseFloat(document.getElementById('voice-rate')?.value || 1.0);
+                const pitch = parseFloat(document.getElementById('voice-pitch')?.value || 1.0);
+                utterance.rate = rate;
+                utterance.pitch = pitch;
+
+                utterance.onstart = () => drawSimulatedWaveform();
+                utterance.onend = () => stopWaveform();
+
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Web Speech API: Speech-to-Text in Chrome
+        let recognition = null;
+        let isRecording = false;
+
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRec();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+
+                recognition.onstart = () => {
+                    isRecording = true;
+                    micButton.classList.add('recording');
+                    userInput.placeholder = "Listening... Speak into microphone";
+                };
+
+                recognition.onresult = (e) => {
+                    const transcript = e.results[0][0].transcript;
+                    userInput.value = transcript;
+                };
+
+                recognition.onend = () => {
+                    isRecording = false;
+                    micButton.classList.remove('recording');
+                    userInput.placeholder = "Type your message or click 🎙️ to speak...";
+                    if (userInput.value.trim()) {
+                        sendMessage();
+                    }
+                };
+
+                recognition.onerror = () => {
+                    isRecording = false;
+                    micButton.classList.remove('recording');
+                    userInput.placeholder = "Type your message or click 🎙️ to speak...";
+                };
+            }
+        }
+
+        micButton.addEventListener('click', () => {
+            if (!recognition) {
+                alert('Speech recognition is supported natively in Google Chrome.');
+                return;
+            }
+            if (isRecording) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        });
+
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // ================= TAB 2: VISUAL ART LOGIC =================
+        let currentSvgMarkup = "";
+
+        async function generateVisualArt() {
+            const prompt = document.getElementById('art-prompt').value.trim();
+            if (!prompt) {
+                alert('Please enter a description for the artwork.');
+                return;
+            }
+
+            const activeStyleBtn = document.querySelector('#art-styles .style-pill.active');
+            const style = activeStyleBtn ? activeStyleBtn.getAttribute('data-style') : 'cyberpunk';
+            const aspect = document.getElementById('art-aspect').value;
+
+            const artBtn = document.getElementById('btn-generate-art');
+            const artDisplay = document.getElementById('art-display');
+            const paletteDisplay = document.getElementById('palette-display');
+            const dlBtn = document.getElementById('btn-download-svg');
+            const copyBtn = document.getElementById('btn-copy-svg');
+
+            artBtn.disabled = true;
+            artBtn.innerHTML = `<span>⚡ Synthesizing Visual Art...</span>`;
+            artDisplay.innerHTML = `<div style="text-align:center; color: var(--cyan-glow);"><div class="typing-dot" style="display:inline-block; margin-right:4px;"></div> Generating vector art scene...</div>`;
+
+            try {
+                const response = await fetch('/api/generate-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt, style: style, aspectRatio: aspect })
+                });
+
+                const data = await response.json();
+                currentSvgMarkup = data.svgMarkup || "";
+
+                if (currentSvgMarkup) {
+                    artDisplay.innerHTML = currentSvgMarkup;
+                    dlBtn.style.display = 'inline-block';
+                    copyBtn.style.display = 'inline-block';
+                }
+
+                if (data.palette && Array.isArray(data.palette)) {
+                    paletteDisplay.style.display = 'flex';
+                    paletteDisplay.innerHTML = '';
+                    data.palette.forEach(hex => {
+                        const chip = document.createElement('div');
+                        chip.className = 'palette-chip';
+                        chip.style.backgroundColor = hex;
+                        chip.title = hex;
+                        paletteDisplay.appendChild(chip);
+                    });
+                }
+            } catch (err) {
+                console.error(err);
+                artDisplay.innerHTML = `<p style="color:#ff5252;">Failed to generate artwork. Please retry.</p>`;
+            } finally {
+                artBtn.disabled = false;
+                artBtn.innerHTML = `<span>⚡ Generate Artwork</span>`;
+            }
+        }
+
+        function downloadSvgArt() {
+            if (!currentSvgMarkup) return;
+            const blob = new Blob([currentSvgMarkup], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `gangstream_art_${Date.now()}.svg`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function copySvgCode() {
+            if (!currentSvgMarkup) return;
+            navigator.clipboard.writeText(currentSvgMarkup);
+            alert('SVG markup copied to clipboard!');
+        }
+
+        // ================= TAB 3: VIDEO STORYBOARD LOGIC =================
+        async function generateVideoScript() {
+            const prompt = document.getElementById('video-prompt').value.trim();
+            if (!prompt) {
+                alert('Please enter a concept for the video.');
+                return;
+            }
+
+            const duration = parseInt(document.getElementById('video-duration').value || '15');
+            const style = document.getElementById('video-style').value;
+            const btn = document.getElementById('btn-generate-video');
+            const list = document.getElementById('storyboard-list');
+
+            btn.disabled = true;
+            btn.innerHTML = `<span>🎬 Directing Cinematic Scenes...</span>`;
+            list.innerHTML = `<div style="text-align:center; padding:20px; color:var(--cyan-glow);">Compiling camera angles and audio cues...</div>`;
+
+            try {
+                const response = await fetch('/api/generate-video', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt, duration: duration, style: style })
+                });
+
+                const data = await response.json();
+                document.getElementById('video-title-display').innerText = data.title || prompt;
+                document.getElementById('video-logline-display').innerText = data.logline || `Duration: ${duration}s • Style: ${style}`;
+
+                list.innerHTML = '';
+                if (data.scenes && Array.isArray(data.scenes)) {
+                    data.scenes.forEach(sc => {
+                        const card = document.createElement('div');
+                        card.className = 'scene-card';
+                        card.innerHTML = `
+                            <div class="scene-badge" style="border-left: 3px solid ${sc.previewColor || '#00f2fe'};">
+                                <span class="num">#${sc.sceneNumber}</span>
+                                <span class="sec">${sc.durationSeconds}s</span>
+                            </div>
+                            <div class="scene-details">
+                                <h4>🎥 ${sc.cameraShot || 'Camera Shot'}</h4>
+                                <p>${sc.visualAction || ''}</p>
+                                <div class="scene-tags">
+                                    <span class="scene-tag">💡 ${sc.lightingMood || 'Lighting'}</span>
+                                    <span class="scene-tag">🎵 ${sc.audioCue || 'Audio'}</span>
+                                </div>
+                            </div>
+                        `;
+                        list.appendChild(card);
+                    });
+                }
+            } catch (err) {
+                console.error(err);
+                list.innerHTML = `<p style="color:#ff5252;">Failed to compile storyboard. Please retry.</p>`;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<span>🎬 Generate Storyboard</span>`;
+            }
+        }
+
+        // ================= TAB 4: VOICE LAB LOGIC =================
+        function populateVoiceList() {
+            if (!('speechSynthesis' in window)) return;
+            const voices = window.speechSynthesis.getVoices();
+            const select = document.getElementById('voice-select');
+            if (!select) return;
+
+            select.innerHTML = '';
+            voices.forEach(voice => {
+                const opt = document.createElement('option');
+                opt.value = voice.name;
+                opt.textContent = `${voice.name} (${voice.lang})${voice.default ? ' — [DEFAULT]' : ''}`;
+                select.appendChild(opt);
+            });
+        }
+
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = populateVoiceList;
+            populateVoiceList();
+        }
+
+        function playVoiceTest() {
+            const text = document.getElementById('tts-input').value;
+            speakText(text);
+        }
+
+        // Animated canvas wave
+        let waveAnimId = null;
+        function drawSimulatedWaveform() {
+            const canvas = document.getElementById('audio-visualizer');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let step = 0;
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#00f2fe';
+                ctx.beginPath();
+
+                const midY = canvas.height / 2;
+                for (let x = 0; x < canvas.width; x += 3) {
+                    const y = midY + Math.sin((x + step) * 0.08) * (Math.random() * 14 + 4);
+                    if (x === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                step += 4;
+                waveAnimId = requestAnimationFrame(animate);
+            }
+            if (waveAnimId) cancelAnimationFrame(waveAnimId);
+            animate();
+        }
+
+        function stopWaveform() {
+            if (waveAnimId) {
+                cancelAnimationFrame(waveAnimId);
+                waveAnimId = null;
+            }
+            const canvas = document.getElementById('audio-visualizer');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        // Voice Lab Speech-to-Text
+        let labRecognition = null;
+        let isLabRecording = false;
+
+        function toggleLabMic() {
+            if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+                alert('Speech recognition requires Google Chrome.');
+                return;
+            }
+
+            const micBtn = document.getElementById('voice-lab-mic');
+            const output = document.getElementById('stt-output');
+
+            if (!labRecognition) {
+                const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+                labRecognition = new SpeechRec();
+                labRecognition.continuous = true;
+                labRecognition.interimResults = true;
+                labRecognition.lang = 'en-US';
+
+                labRecognition.onresult = (e) => {
+                    let finalTranscript = '';
+                    for (let i = e.resultIndex; i < e.results.length; ++i) {
+                        finalTranscript += e.results[i][0].transcript;
+                    }
+                    output.innerText = finalTranscript;
+                };
+
+                labRecognition.onend = () => {
+                    isLabRecording = false;
+                    micBtn.classList.remove('recording');
+                };
+
+                labRecognition.onerror = () => {
+                    isLabRecording = false;
+                    micBtn.classList.remove('recording');
+                };
+            }
+
+            if (isLabRecording) {
+                labRecognition.stop();
+                isLabRecording = false;
+                micBtn.classList.remove('recording');
+            } else {
+                labRecognition.start();
+                isLabRecording = true;
+                micBtn.classList.add('recording');
+                output.innerText = "Listening... Speak clearly into your Chrome microphone...";
+            }
+        }
+
+        function transferSTTToChat() {
+            const text = document.getElementById('stt-output').innerText.trim();
+            if (text && !text.includes('Click the microphone')) {
+                userInput.value = text;
+                switchTab('tab-chat');
+                userInput.focus();
+            } else {
+                alert('Record some speech first before transferring to chat.');
+            }
+        }
+
+        // ================= TAB 5: HISTORY RENDERING =================
+        function renderHistoryTab() {
+            const container = document.getElementById('history-container');
+            if (!container) return;
+
+            container.innerHTML = '';
+            if (conversationHistory.length === 0) {
+                container.innerHTML = `<p style="color:var(--text-muted); font-size:13px;">No archived messages in this session.</p>`;
+                return;
+            }
+
+            conversationHistory.slice().reverse().forEach((msg, idx) => {
+                const card = document.createElement('div');
+                card.style.background = 'rgba(0,0,0,0.25)';
+                card.style.border = '1px solid var(--glass-border)';
+                card.style.borderRadius = '10px';
+                card.style.padding = '12px';
+
+                card.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted); margin-bottom:4px;">
+                        <span style="font-weight:700; color:${msg.role === 'user' ? '#4CAF50' : '#2196F3'};">${msg.role === 'user' ? 'USER' : 'GANGSTREAM AI'}</span>
+                        <span>${new Date(msg.timestamp || Date.now()).toLocaleTimeString()}</span>
+                    </div>
+                    <div style="font-size:13px; line-height:1.4; color:#fff;">${msg.text}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedChat();
+            initSpeechRecognition();
+            populateVoiceList();
+        });
+    </script>
+</body>
+</html>
