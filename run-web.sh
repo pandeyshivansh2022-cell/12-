@@ -1,8 +1,8 @@
 #!/bin/bash
 while true; do
-  if ! pgrep -f "node /app/applet/server.js" > /dev/null; then
+  if ! pgrep -f "server.js" > /dev/null; then
     echo "[$(date)] Starting Gangstream AI web server..." >> /tmp/gangstream.log
-    node /app/applet/server.js >> /tmp/gangstream.log 2>&1
+    cd /app/applet && node server.js >> /tmp/gangstream.log 2>&1
   fi
-  sleep 3
+  sleep 2
 done

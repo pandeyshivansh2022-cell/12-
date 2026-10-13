@@ -787,6 +787,438 @@
             color: #00f2fe;
             text-decoration: none;
         }
+
+        /* --- TAB: WIKIPEDIA UNIVERSAL KNOWLEDGE HUB --- */
+        .wiki-hub-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .wiki-header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .wiki-main-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .wiki-globe-icon {
+            font-size: 32px;
+            background: linear-gradient(135deg, #2196F3, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wiki-header-stats {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .wiki-stat-chip {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #00f2fe;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .wiki-search-box {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .wiki-search-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .wiki-input-wrapper {
+            flex: 1;
+            min-width: 240px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .wiki-search-icon {
+            position: absolute;
+            left: 14px;
+            font-size: 16px;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .wiki-input-wrapper input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 24px;
+            padding: 12px 38px 12px 42px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .wiki-input-wrapper input:focus {
+            border-color: #00f2fe;
+            box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
+        }
+
+        .wiki-clear-btn {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            cursor: pointer;
+            display: none;
+            padding: 4px;
+        }
+
+        .wiki-clear-btn:hover {
+            color: #fff;
+        }
+
+        .wiki-select {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 20px;
+            color: #fff;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .wiki-select option {
+            background: #111528;
+            color: #fff;
+        }
+
+        .wiki-quick-realms {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .wiki-explorer-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 860px) {
+            .wiki-explorer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .wiki-article-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 22px;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .wiki-article-hero {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 16px;
+            align-items: flex-start;
+        }
+
+        .wiki-article-thumb {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+            flex-shrink: 0;
+            background: #1a1e2e;
+        }
+
+        .wiki-article-meta {
+            flex: 1;
+        }
+
+        .wiki-article-meta h3 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 6px;
+            line-height: 1.25;
+        }
+
+        .wiki-article-desc {
+            font-size: 13px;
+            color: #00f2fe;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .wiki-article-extract {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #d1d5db;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 16px;
+            border-radius: 10px;
+            border-left: 3px solid #2196F3;
+        }
+
+        .wiki-article-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: auto;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .wiki-sidebar-pane {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .wiki-results-panel, .wiki-onthisday-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 16px;
+        }
+
+        .wiki-results-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .wiki-result-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .wiki-result-item:hover {
+            background: rgba(33, 150, 243, 0.18);
+            border-color: #2196F3;
+            transform: translateX(4px);
+        }
+
+        .wiki-result-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .wiki-result-snippet {
+            font-size: 11px;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+
+        .wiki-onthisday-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 380px;
+            overflow-y: auto;
+        }
+
+        .wiki-onthisday-item {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 10px 12px;
+            border-left: 3px solid #ffeb3b;
+        }
+
+        .wiki-onthisday-year {
+            font-size: 11px;
+            font-weight: 800;
+            color: #ffeb3b;
+            margin-bottom: 4px;
+        }
+
+        .wiki-onthisday-text {
+            font-size: 12px;
+            color: #e5e7eb;
+            line-height: 1.45;
+        }
+
+        /* Grounding Card inside Chat Bubble */
+        .wiki-grounding-card {
+            margin-top: 12px;
+            background: rgba(10, 15, 28, 0.85);
+            border: 1px solid rgba(0, 242, 254, 0.4);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+        }
+
+        .wiki-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .wiki-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .wiki-w-logo {
+            background: #fff;
+            color: #000;
+            font-weight: 900;
+            font-family: serif;
+            font-size: 11px;
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wiki-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #00f2fe;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .wiki-verified {
+            font-size: 9px;
+            font-weight: 700;
+            background: rgba(76, 175, 80, 0.25);
+            color: #4CAF50;
+            padding: 2px 6px;
+            border-radius: 8px;
+            border: 1px solid rgba(76, 175, 80, 0.4);
+        }
+
+        .wiki-card-body {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .wiki-card-thumb {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+            background: #111;
+        }
+
+        .wiki-card-info {
+            flex: 1;
+        }
+
+        .wiki-card-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .wiki-card-desc {
+            font-size: 11px;
+            color: #00f2fe;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .wiki-card-extract {
+            font-size: 11px;
+            color: #cbd5e1;
+            line-height: 1.45;
+            font-style: italic;
+        }
+
+        .wiki-card-footer {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .wiki-btn-link, .wiki-btn-action {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            text-decoration: none;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .wiki-btn-link:hover, .wiki-btn-action:hover {
+            background: rgba(33, 150, 243, 0.3);
+            border-color: #2196F3;
+            color: #00f2fe;
+        }
     </style>
 </head>
 <body>
@@ -805,6 +1237,7 @@
 
         <nav class="nav-tabs" role="tablist">
             <button class="tab-btn active" onclick="switchTab('tab-chat')" id="btn-tab-chat">💬 Chat AI</button>
+            <button class="tab-btn" onclick="switchTab('tab-wiki')" id="btn-tab-wiki">🌐 Wikipedia Hub</button>
             <button class="tab-btn" onclick="switchTab('tab-visual')" id="btn-tab-visual">🎨 Visual Studio</button>
             <button class="tab-btn" onclick="switchTab('tab-video')" id="btn-tab-video">🎬 Video Studio</button>
             <button class="tab-btn" onclick="switchTab('tab-voice')" id="btn-tab-voice">🎙️ Voice & Audio</button>
@@ -827,6 +1260,7 @@
                         <span>Persona:</span>
                         <select id="chat-persona">
                             <option value="general">Cybernetic Assistant (General)</option>
+                            <option value="scholar">Wikipedia Scholar & Encyclopedist</option>
                             <option value="coder">Code & Tech Architect</option>
                             <option value="creative">Futuristic Poet & Visionary</option>
                             <option value="director">Creative Media Director</option>
@@ -834,6 +1268,7 @@
                     </div>
 
                     <div class="chat-actions">
+                        <button class="btn-tiny" id="wiki-grounding-toggle" onclick="toggleWikiGrounding()" style="border-color: rgba(0, 242, 254, 0.5); color: #00f2fe; background: rgba(0, 242, 254, 0.1);">🌐 Wiki Grounding: ON</button>
                         <button class="btn-tiny" onclick="clearCurrentChat()">🗑️ Clear</button>
                         <button class="btn-tiny" onclick="exportChatTranscript()">📥 Export</button>
                     </div>
@@ -846,21 +1281,138 @@
 
                 <!-- Quick Prompt Chips -->
                 <div class="quick-chips">
-                    <button class="quick-chip" onclick="sendQuickPrompt('What are all the capabilities of Gangstream AI?')">⚡ Capabilities</button>
-                    <button class="quick-chip" onclick="sendQuickPrompt('Write a futuristic cybernetic poem about streaming intelligence.')">🚀 Cyber Poem</button>
-                    <button class="quick-chip" onclick="sendQuickPrompt('How do you connect Dialogflow, Gemini 3.5, and Node.js?')">🧠 Architecture</button>
-                    <button class="quick-chip" onclick="sendQuickPrompt('Provide an optimal Jetpack Compose code structure for Android.')">💻 Android Tech</button>
-                    <button class="quick-chip" onclick="sendQuickPrompt('Brainstorm a viral cinematic sci-fi video concept.')">🎬 Video Idea</button>
+                    <button class="quick-chip" onclick="sendQuickPrompt('Explain Albert Einstein\'s General Relativity and spacetime curvature.')">🌌 General Relativity</button>
+                    <button class="quick-chip" onclick="sendQuickPrompt('Tell me about the James Webb Space Telescope and its deepest cosmological discoveries.')">🔭 James Webb Telescope</button>
+                    <button class="quick-chip" onclick="sendQuickPrompt('What is CRISPR gene editing and what are its latest applications?')">🧬 CRISPR Editing</button>
+                    <button class="quick-chip" onclick="sendQuickPrompt('Provide a comprehensive encyclopedic history of Artificial Intelligence from Alan Turing to modern LLMs.')">🤖 AI History</button>
+                    <button class="quick-chip" onclick="exploreRandomWikiFromChat()">🎲 Random Wiki Deep-Dive</button>
+                    <button class="quick-chip" onclick="sendQuickPrompt('What are all the capabilities of Gangstream AI with Wikipedia integration?')">⚡ Capabilities</button>
                 </div>
 
                 <!-- Input Deck -->
                 <div class="chat-input-bar">
                     <button class="icon-btn" id="mic-button" title="Voice Input (Chrome Speech-to-Text)">🎙️</button>
-                    <input type="text" id="user-input" placeholder="Type your message or click 🎙️ to speak..." autocomplete="off">
+                    <input type="text" id="user-input" placeholder="Ask anything across 60M+ Wikipedia articles or click 🎙️..." autocomplete="off">
                     <button class="btn-send" id="send-button">
                         <span>Send</span>
                         <span>➔</span>
                     </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB: WIKIPEDIA UNIVERSAL KNOWLEDGE HUB ================= -->
+        <section id="tab-wiki" class="tab-content">
+            <div class="glass-panel">
+                <div class="wiki-hub-header">
+                    <div class="wiki-header-left">
+                        <div class="wiki-main-logo">
+                            <div class="wiki-globe-icon">🌐</div>
+                            <div>
+                                <h2 style="font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                                    Wikipedia Universal Knowledge Hub
+                                    <span class="status-badge" style="font-size: 10px; background: rgba(33, 150, 243, 0.2); color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.4);">
+                                        60M+ ARTICLES // 300+ LANGUAGES
+                                    </span>
+                                </h2>
+                                <p style="font-size: 13px; color: var(--text-sub); margin-top: 4px;">
+                                    Direct live access to Wikipedia's free encyclopedia. Search any topic, read full verified summaries, explore daily milestones, or deep-dive with Gangstream AI.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wiki-header-stats">
+                        <div class="wiki-stat-chip">📚 Wikipedia Source Connected</div>
+                        <div class="wiki-stat-chip">🌍 Multi-Language Live API</div>
+                        <div class="wiki-stat-chip">🔊 Chrome Speech Enabled</div>
+                    </div>
+                </div>
+
+                <!-- Search & Discovery Bar -->
+                <div class="wiki-search-box">
+                    <div class="wiki-search-row">
+                        <div class="wiki-input-wrapper">
+                            <span class="wiki-search-icon">🔍</span>
+                            <input type="text" id="wiki-search-input" placeholder="Search any topic, historical event, scientific theory, biography, country..." autocomplete="off">
+                            <button class="wiki-clear-btn" id="wiki-clear-search" onclick="clearWikiSearch()">✕</button>
+                        </div>
+                        <select id="wiki-lang-select" class="wiki-select" title="Wikipedia Language" onchange="onWikiLangChange()">
+                            <option value="en">English (en)</option>
+                            <option value="es">Español (es)</option>
+                            <option value="fr">Français (fr)</option>
+                            <option value="de">Deutsch (de)</option>
+                            <option value="ja">日本語 (ja)</option>
+                            <option value="zh">中文 (zh)</option>
+                            <option value="ru">Русский (ru)</option>
+                            <option value="hi">हिन्दी (hi)</option>
+                            <option value="ar">العربية (ar)</option>
+                            <option value="pt">Português (pt)</option>
+                        </select>
+                        <button class="btn-send" onclick="performWikiSearch()" style="height: 44px; padding: 0 20px;">
+                            <span>Search</span>
+                        </button>
+                        <button class="btn-tiny wiki-random-btn" onclick="fetchRandomWikiArticle()" style="height: 44px; padding: 0 16px; font-weight: 600; display: flex; align-items: center; gap: 6px; background: rgba(33, 150, 243, 0.25); border-color: rgba(33, 150, 243, 0.5);">
+                            <span>🎲 Random Article</span>
+                        </button>
+                    </div>
+
+                    <!-- Quick Knowledge Realm Pills -->
+                    <div class="wiki-quick-realms">
+                        <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Realms:</span>
+                        <button class="quick-chip" onclick="loadWikiTopic('Artificial intelligence')">🤖 Artificial Intelligence</button>
+                        <button class="quick-chip" onclick="loadWikiTopic('General relativity')">🌌 General Relativity</button>
+                        <button class="quick-chip" onclick="loadWikiTopic('Quantum computing')">⚛️ Quantum Computing</button>
+                        <button class="quick-chip" onclick="loadWikiTopic('James Webb Space Telescope')">🔭 James Webb Telescope</button>
+                        <button class="quick-chip" onclick="loadWikiTopic('CRISPR')">🧬 CRISPR Gene Editing</button>
+                        <button class="quick-chip" onclick="loadWikiTopic('Cybernetics')">🦾 Cybernetics</button>
+                        <button class="quick-chip" onclick="loadWikiTopic('Renaissance')">🎨 Renaissance</button>
+                        <button class="quick-chip" onclick="loadWikiTopic('Stoicism')">🏛️ Stoicism</button>
+                        <button class="quick-chip" onclick="loadWikiTopic('Photosynthesis')">🌿 Photosynthesis</button>
+                        <button class="quick-chip" onclick="loadWikiTopic('Black hole')">🕳️ Black Holes</button>
+                    </div>
+                </div>
+
+                <!-- Main Explorer Layout: Left (Article Spotlight) & Right (Search Results & On This Day) -->
+                <div class="wiki-explorer-grid">
+                    <!-- Left: Article Reader Spotlight -->
+                    <div class="wiki-article-card" id="wiki-spotlight-card">
+                        <div id="wiki-article-loading" style="display: none; text-align: center; padding: 60px 20px;">
+                            <div class="typing-dot" style="display: inline-block; width: 12px; height: 12px; margin: 0 3px;"></div>
+                            <div class="typing-dot" style="display: inline-block; width: 12px; height: 12px; margin: 0 3px;"></div>
+                            <div class="typing-dot" style="display: inline-block; width: 12px; height: 12px; margin: 0 3px;"></div>
+                            <p style="margin-top: 14px; font-size: 13px; color: #00f2fe;">Querying Wikipedia Knowledge Base...</p>
+                        </div>
+                        <div id="wiki-article-content">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Search Results & On This Day In History -->
+                    <div class="wiki-sidebar-pane">
+                        <!-- Live Search Results (hidden when empty) -->
+                        <div class="wiki-results-panel" id="wiki-results-panel" style="display: none;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                                <h3 style="font-size: 13px; font-weight: 700; color: #00f2fe;">🔍 Search Results</h3>
+                                <span id="wiki-results-count" style="font-size: 11px; color: var(--text-muted);"></span>
+                            </div>
+                            <div class="wiki-results-list" id="wiki-results-list"></div>
+                        </div>
+
+                        <!-- On This Day in History Feed -->
+                        <div class="wiki-onthisday-panel">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                                <h3 style="font-size: 13px; font-weight: 700; color: #ffeb3b; display: flex; align-items: center; gap: 6px;">
+                                    <span>📅 On This Day in History</span>
+                                </h3>
+                                <span id="wiki-today-date" style="font-size: 11px; color: var(--text-muted); background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 10px;"></span>
+                            </div>
+                            <div class="wiki-onthisday-list" id="wiki-onthisday-list">
+                                <div style="text-align: center; color: var(--text-muted); padding: 20px; font-size: 12px;">
+                                    Loading historical milestones from Wikipedia...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1081,6 +1633,12 @@
 
             if (tabId === 'tab-history') {
                 renderHistoryTab();
+            } else if (tabId === 'tab-wiki') {
+                const content = document.getElementById('wiki-article-content');
+                if (!content || !content.innerHTML.trim()) {
+                    loadWikiTopic('Artificial intelligence', currentWikiLang);
+                    loadOnThisDay();
+                }
             }
         }
 
@@ -1094,11 +1652,32 @@
 
         // Chat state
         let conversationHistory = [];
+        let isWikiGroundingEnabled = true;
+        let currentWikiLang = 'en';
+
         const chatMessages = document.getElementById('chat-messages');
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-button');
         const micButton = document.getElementById('mic-button');
         const personaSelect = document.getElementById('chat-persona');
+
+        function toggleWikiGrounding() {
+            isWikiGroundingEnabled = !isWikiGroundingEnabled;
+            const btn = document.getElementById('wiki-grounding-toggle');
+            if (btn) {
+                if (isWikiGroundingEnabled) {
+                    btn.innerHTML = '🌐 Wiki Grounding: ON';
+                    btn.style.color = '#00f2fe';
+                    btn.style.borderColor = 'rgba(0, 242, 254, 0.5)';
+                    btn.style.background = 'rgba(0, 242, 254, 0.1)';
+                } else {
+                    btn.innerHTML = '🌐 Wiki Grounding: OFF';
+                    btn.style.color = 'var(--text-muted)';
+                    btn.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                    btn.style.background = 'transparent';
+                }
+            }
+        }
 
         // Load chat from localStorage
         function loadSavedChat() {
@@ -1106,14 +1685,14 @@
                 const saved = localStorage.getItem('gangstream_chat_history');
                 if (saved) {
                     conversationHistory = JSON.parse(saved);
-                    conversationHistory.forEach(msg => addMessageDOM(msg.text, msg.role === 'user', false));
+                    conversationHistory.forEach(msg => addMessageDOM(msg.text, msg.role === 'user', msg.wikipedia));
                 }
             } catch (e) {
                 console.warn('Error loading chat history:', e);
             }
 
             if (conversationHistory.length === 0) {
-                addMessage("Hello! How can I assist you today?", false, true);
+                addMessage("Hello! I am Gangstream AI, enhanced with Wikipedia's whole knowledge base across 60M+ articles. Ask me any question about history, science, technology, biographies, or exploration!", false, true);
             }
         }
 
@@ -1125,26 +1704,91 @@
             }
         }
 
+        // Markdown formatter helper
+        function formatMarkdown(text) {
+            if (!text) return '';
+            let html = escapeHtml(text);
+            // Bold
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            // Headers
+            html = html.replace(/^### (.*$)/gim, '<h4 style="color:#00f2fe; margin:8px 0 4px; font-size:14px;">$1</h4>');
+            html = html.replace(/^## (.*$)/gim, '<h3 style="color:#fff; margin:10px 0 6px; font-size:15px;">$1</h3>');
+            html = html.replace(/^# (.*$)/gim, '<h2 style="color:#fff; margin:12px 0 6px; font-size:16px;">$1</h2>');
+            // Inline code
+            html = html.replace(/`([^`]+)`/g, '<code style="background:rgba(0,0,0,0.3); color:#00f2fe; padding:2px 5px; border-radius:4px; font-family:monospace; font-size:12px;">$1</code>');
+            // Bullet points
+            html = html.replace(/^\* (.*$)/gim, '<li style="margin-left:14px;">$1</li>');
+            html = html.replace(/^- (.*$)/gim, '<li style="margin-left:14px;">$1</li>');
+            // Line breaks
+            html = html.replace(/\n/g, '<br>');
+            return html;
+        }
+
         // Add message helper
-        function addMessage(text, isUser = false, save = true) {
+        function addMessage(text, isUser = false, save = true, wikiData = null) {
             if (save) {
                 conversationHistory.push({
                     role: isUser ? 'user' : 'model',
                     text: text,
+                    wikipedia: wikiData,
                     timestamp: new Date().toISOString()
                 });
                 saveChat();
             }
-            addMessageDOM(text, isUser);
+            addMessageDOM(text, isUser, wikiData);
         }
 
-        function addMessageDOM(text, isUser = false) {
+        function addMessageDOM(text, isUser = false, wikiData = null) {
             const row = document.createElement('div');
             row.className = `message-row ${isUser ? 'user-row' : 'bot-row'}`;
 
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-            messageDiv.textContent = text;
+            
+            // Format text with markdown
+            const textContainer = document.createElement('div');
+            if (isUser) {
+                textContainer.textContent = text;
+            } else {
+                textContainer.innerHTML = formatMarkdown(text);
+            }
+            messageDiv.appendChild(textContainer);
+
+            // Grounding Card for Wikipedia
+            if (!isUser && wikiData && wikiData.title && wikiData.extract) {
+                const wikiCard = document.createElement('div');
+                wikiCard.className = 'wiki-grounding-card';
+                const safeTitle = escapeHtml(wikiData.title);
+                const safeDesc = escapeHtml(wikiData.description || 'Encyclopedia Knowledge');
+                const safeExtract = escapeHtml(wikiData.extract);
+                const safeUrl = wikiData.url || `https://en.wikipedia.org/wiki/${encodeURIComponent(wikiData.title)}`;
+                const jsTitle = escapeJs(wikiData.title);
+                const jsExtract = escapeJs(wikiData.extract);
+
+                wikiCard.innerHTML = `
+                    <div class="wiki-card-header">
+                        <div class="wiki-badge">
+                            <span class="wiki-w-logo">W</span>
+                            <span class="wiki-label">Wikipedia Knowledge Citation</span>
+                        </div>
+                        <span class="wiki-verified">✓ Verified Encyclopedia</span>
+                    </div>
+                    <div class="wiki-card-body">
+                        ${wikiData.thumbnail ? `<img src="${wikiData.thumbnail}" class="wiki-card-thumb" alt="${safeTitle}" onerror="this.style.display='none'">` : ''}
+                        <div class="wiki-card-info">
+                            <div class="wiki-card-title">${safeTitle}</div>
+                            ${wikiData.description ? `<div class="wiki-card-desc">${safeDesc}</div>` : ''}
+                            <div class="wiki-card-extract">"${safeExtract}"</div>
+                        </div>
+                    </div>
+                    <div class="wiki-card-footer">
+                        <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="wiki-btn-link">🔗 View on Wikipedia</a>
+                        <button class="wiki-btn-action" onclick="askAboutWikiArticle('${jsTitle}')">⚡ Deep-Dive Article</button>
+                        <button class="wiki-btn-action" onclick="speakText('${jsExtract}')">🔊 Listen</button>
+                    </div>
+                `;
+                messageDiv.appendChild(wikiCard);
+            }
 
             const meta = document.createElement('div');
             meta.className = 'message-meta';
@@ -1188,7 +1832,7 @@
             typingElement.className = 'message-row bot-row';
             typingElement.innerHTML = `
                 <div class="typing-indicator">
-                    <span>Gangstream is reasoning</span>
+                    <span>Gangstream is querying Wikipedia & neural core</span>
                     <div class="typing-dot"></div>
                     <div class="typing-dot"></div>
                     <div class="typing-dot"></div>
@@ -1223,7 +1867,9 @@
                     body: JSON.stringify({
                         message: text,
                         persona: persona,
-                        history: conversationHistory.slice(-8)
+                        history: conversationHistory.slice(-8),
+                        useWikipedia: isWikiGroundingEnabled,
+                        lang: currentWikiLang
                     })
                 });
 
@@ -1235,7 +1881,7 @@
                 }
 
                 const data = await response.json();
-                addMessage(data.response || "No response received.");
+                addMessage(data.response || "No response received.", false, true, data.wikipedia);
             } catch (err) {
                 hideTypingIndicator();
                 sendButton.disabled = false;
@@ -1254,7 +1900,7 @@
                 conversationHistory = [];
                 localStorage.removeItem('gangstream_chat_history');
                 chatMessages.innerHTML = '';
-                addMessage("Hello! How can I assist you today?", false, true);
+                addMessage("Hello! I am Gangstream AI, enhanced with Wikipedia's whole knowledge base. What would you like to explore?", false, true);
             }
         }
 
@@ -1264,6 +1910,210 @@
             dlAnchor.setAttribute("href", dataStr);
             dlAnchor.setAttribute("download", `gangstream_chat_${Date.now()}.json`);
             dlAnchor.click();
+        }
+
+        // ================= WIKIPEDIA HUB FUNCTIONS =================
+        function onWikiLangChange() {
+            const sel = document.getElementById('wiki-lang-select');
+            if (sel) currentWikiLang = sel.value;
+        }
+
+        function clearWikiSearch() {
+            const input = document.getElementById('wiki-search-input');
+            if (input) input.value = '';
+            const clearBtn = document.getElementById('wiki-clear-search');
+            if (clearBtn) clearBtn.style.display = 'none';
+            const panel = document.getElementById('wiki-results-panel');
+            if (panel) panel.style.display = 'none';
+        }
+
+        async function performWikiSearch() {
+            const input = document.getElementById('wiki-search-input');
+            const query = input ? input.value.trim() : '';
+            if (!query) return;
+
+            const resultsPanel = document.getElementById('wiki-results-panel');
+            const resultsList = document.getElementById('wiki-results-list');
+            const resultsCount = document.getElementById('wiki-results-count');
+            const clearBtn = document.getElementById('wiki-clear-search');
+
+            if (clearBtn) clearBtn.style.display = 'block';
+            if (resultsPanel) resultsPanel.style.display = 'block';
+            if (resultsList) resultsList.innerHTML = '<div style="color:var(--text-sub); font-size:12px; padding:10px;">Searching Wikipedia across 60M+ articles...</div>';
+
+            try {
+                const lang = currentWikiLang;
+                const res = await fetch(`/api/wikipedia/search?q=${encodeURIComponent(query)}&lang=${lang}&limit=8`);
+                const data = await res.json();
+
+                if (resultsList) resultsList.innerHTML = '';
+                if (data.results && data.results.length > 0) {
+                    if (resultsCount) resultsCount.textContent = `${data.results.length} articles found`;
+                    data.results.forEach((item) => {
+                        const el = document.createElement('div');
+                        el.className = 'wiki-result-item';
+                        el.innerHTML = `
+                            <div class="wiki-result-title">${escapeHtml(item.title)}</div>
+                            <div class="wiki-result-snippet">${escapeHtml(item.snippet)}...</div>
+                        `;
+                        el.onclick = () => loadWikiTopic(item.title, lang);
+                        resultsList.appendChild(el);
+                    });
+                    loadWikiTopic(data.results[0].title, lang);
+                } else {
+                    if (resultsCount) resultsCount.textContent = '0 results';
+                    if (resultsList) resultsList.innerHTML = '<div style="color:var(--text-muted); font-size:12px; padding:10px;">No Wikipedia articles matched this query. Try a different topic or language.</div>';
+                }
+            } catch (err) {
+                console.error('Wiki search failed:', err);
+                if (resultsList) resultsList.innerHTML = '<div style="color:#ff5252; font-size:12px; padding:10px;">Search request failed. Please check connection.</div>';
+            }
+        }
+
+        async function loadWikiTopic(title, lang = 'en') {
+            if (!title) return;
+            const loading = document.getElementById('wiki-article-loading');
+            const content = document.getElementById('wiki-article-content');
+            if (loading) loading.style.display = 'block';
+            if (content) content.style.display = 'none';
+
+            try {
+                const res = await fetch(`/api/wikipedia/summary?title=${encodeURIComponent(title)}&lang=${lang}`);
+                if (!res.ok) throw new Error('Not found');
+                const data = await res.json();
+                renderSpotlightArticle(data);
+            } catch (e) {
+                console.error('Failed to load topic:', e);
+                if (content) {
+                    content.style.display = 'block';
+                    content.innerHTML = `<div style="text-align:center; padding:40px; color:#ff5252;">Unable to retrieve "${escapeHtml(title)}" from Wikipedia.</div>`;
+                }
+            } finally {
+                if (loading) loading.style.display = 'none';
+            }
+        }
+
+        async function fetchRandomWikiArticle() {
+            const loading = document.getElementById('wiki-article-loading');
+            const content = document.getElementById('wiki-article-content');
+            if (loading) loading.style.display = 'block';
+            if (content) content.style.display = 'none';
+
+            try {
+                const res = await fetch(`/api/wikipedia/random?lang=${currentWikiLang}`);
+                const data = await res.json();
+                renderSpotlightArticle(data);
+            } catch (e) {
+                console.error('Random wiki error:', e);
+            } finally {
+                if (loading) loading.style.display = 'none';
+            }
+        }
+
+        function renderSpotlightArticle(article) {
+            const content = document.getElementById('wiki-article-content');
+            if (!content) return;
+            content.style.display = 'block';
+
+            const safeTitle = escapeHtml(article.title || 'Wikipedia Article');
+            const safeDesc = escapeHtml(article.description || 'Verified Encyclopedia Knowledge');
+            const safeExtract = escapeHtml(article.extract || 'No summary available.');
+            const safeUrl = article.url || `https://en.wikipedia.org/wiki/${encodeURIComponent(article.title)}`;
+            const jsTitle = escapeJs(article.title || '');
+            const jsExtract = escapeJs(article.extract || '');
+
+            content.innerHTML = `
+                <div class="wiki-article-hero">
+                    ${article.thumbnail ? `<img src="${article.thumbnail}" class="wiki-article-thumb" alt="${safeTitle}" onerror="this.style.display='none'">` : '<div class="wiki-article-thumb" style="display:flex;align-items:center;justify-content:center;font-size:42px;color:rgba(255,255,255,0.4);">📖</div>'}
+                    <div class="wiki-article-meta">
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                            <span class="wiki-w-logo">W</span>
+                            <span style="font-size:11px; font-weight:700; color:#00f2fe; text-transform:uppercase; letter-spacing:0.8px;">Wikipedia Verified Article</span>
+                            <span class="wiki-verified">Verified Encyclopedia</span>
+                        </div>
+                        <h3>${safeTitle}</h3>
+                        <div class="wiki-article-desc">${safeDesc}</div>
+                    </div>
+                </div>
+
+                <div class="wiki-article-extract">
+                    ${safeExtract}
+                </div>
+
+                <div class="wiki-article-actions">
+                    <button class="btn-send" onclick="askAboutWikiArticle('${jsTitle}')" style="padding:10px 18px; font-size:13px;">
+                        <span>⚡ Ask Gangstream AI</span>
+                    </button>
+                    <button class="btn-tiny" onclick="speakText('${jsExtract}')" style="padding:10px 16px; font-size:13px; font-weight:600; display:flex; align-items:center; gap:6px;">
+                        <span>🔊 Read Aloud (Chrome TTS)</span>
+                    </button>
+                    <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="btn-tiny" style="padding:10px 16px; font-size:13px; font-weight:600; text-decoration:none; display:flex; align-items:center; gap:6px; border-color:rgba(33,150,243,0.5); color:#00f2fe;">
+                        <span>🔗 Open on Wikipedia</span>
+                    </a>
+                    <button class="btn-tiny" onclick="navigator.clipboard.writeText('${jsExtract}'); alert('Wikipedia extract copied to clipboard!');" style="padding:10px 16px; font-size:13px;">
+                        <span>📋 Copy Summary</span>
+                    </button>
+                </div>
+            `;
+        }
+
+        async function loadOnThisDay() {
+            const list = document.getElementById('wiki-onthisday-list');
+            const dateLabel = document.getElementById('wiki-today-date');
+            if (!list) return;
+
+            const today = new Date();
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            if (dateLabel) {
+                dateLabel.textContent = `${months[today.getUTCMonth()]} ${today.getUTCDate()}`;
+            }
+
+            try {
+                const res = await fetch('/api/wikipedia/onthisday');
+                const data = await res.json();
+                list.innerHTML = '';
+                if (data.events && Array.isArray(data.events)) {
+                    data.events.slice(0, 6).forEach(ev => {
+                        const item = document.createElement('div');
+                        item.className = 'wiki-onthisday-item';
+                        const mainPage = ev.pages && ev.pages.length > 0 ? ev.pages[0].title : '';
+                        item.innerHTML = `
+                            <div class="wiki-onthisday-year">YEAR ${ev.year}</div>
+                            <div class="wiki-onthisday-text">${escapeHtml(ev.text)}</div>
+                            ${mainPage ? `<div style="margin-top:6px;"><button class="btn-tiny" onclick="loadWikiTopic('${escapeJs(mainPage)}')" style="font-size:10px; padding:2px 8px;">Explore: ${escapeHtml(mainPage)}</button></div>` : ''}
+                        `;
+                        list.appendChild(item);
+                    });
+                }
+            } catch (e) {
+                console.error('Failed to load on this day:', e);
+            }
+        }
+
+        function askAboutWikiArticle(title) {
+            switchTab('tab-chat');
+            userInput.value = `Provide a comprehensive encyclopedic breakdown, historical significance, and deep-dive analysis of "${title}" based on Wikipedia knowledge.`;
+            sendMessage();
+        }
+
+        function exploreRandomWikiFromChat() {
+            userInput.value = `Tell me a fascinating, lesser-known discovery, theory, or historical event from Wikipedia that most people don't know about.`;
+            sendMessage();
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function escapeJs(str) {
+            if (!str) return '';
+            return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, ' ');
         }
 
         // Web Speech API: Text-to-Speech
@@ -1644,6 +2494,17 @@
             loadSavedChat();
             initSpeechRecognition();
             populateVoiceList();
+            // Preload Wikipedia featured knowledge and on-this-day feed
+            loadWikiTopic('Artificial intelligence', 'en');
+            loadOnThisDay();
+
+            // Enable Enter key on Wikipedia search input
+            const wikiSearchInput = document.getElementById('wiki-search-input');
+            if (wikiSearchInput) {
+                wikiSearchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') performWikiSearch();
+                });
+            }
         });
     </script>
 </body>

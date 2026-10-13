@@ -116,13 +116,14 @@ class GangstreamRepository(
         // If custom Express / Dialogflow backend mode is enabled
         if (useCustomBackend) {
             return try {
-                val backendResponse = backendClient.sendChatMessage(backendUrl, userPrompt)
+                val (backendResponse, citationsJson) = backendClient.sendChatMessageWithGrounding(backendUrl, userPrompt)
                 val modelMessage = ChatMessage(
                     id = UUID.randomUUID().toString(),
                     sessionId = sessionId,
                     role = "model",
                     text = backendResponse,
-                    modelUsed = "Dialogflow ES",
+                    modelUsed = "Gangstream AI + Wikipedia",
+                    citations = citationsJson,
                     timestamp = System.currentTimeMillis(),
                     isError = false
                 )

@@ -20,16 +20,17 @@ class GangstreamBackendClient {
     private val jsonMediaType = "application/json; charset=utf-8".toMediaType()
 
     /**
-     * Send message to Express /api/chat endpoint
+     * Send message to Express /api/chat endpoint with Wikipedia Grounding
      * Expects: POST /api/chat with {"message": "..."}
-     * Returns: response text from {"response": "..."}
+     * Returns: Pair of (reply text, citations JSON)
      */
-    suspend fun sendChatMessage(backendBaseUrl: String, message: String): String = withContext(Dispatchers.IO) {
+    suspend fun sendChatMessageWithGrounding(backendBaseUrl: String, message: String): Pair<String, String?> = withContext(Dispatchers.IO) {
         val cleanUrl = backendBaseUrl.trim().removeSuffix("/")
         val url = "$cleanUrl/api/chat"
 
         val jsonBody = JSONObject().apply {
             put("message", message)
+            put("useWikipedia", true)
         }
 
         val request = Request.Builder()
@@ -51,12 +52,29 @@ class GangstreamBackendClient {
         }
 
         val json = JSONObject(responseBody)
-        val reply = json.optString("response", "")
-        if (reply.isNotEmpty()) {
-            reply
-        } else {
-            "Response received from Gangstream backend."
-        }
+        val reply = json.optString("response", "Response received from Gangstream backend.")
+        
+        val wikiObj = json.optJSONObject("wikipedia")
+        val citationsJson = if (wikiObj != null && wikiObj.optString("title").isNotEmpty()) {
+            val arr = org.json.JSONArray()
+            val obj = org.json.JSONObject()
+            obj.put("title", "Wikipedia: " + wikiObj.optString("title"))
+            obj.put("url", wikiObj.optString("url"))
+            arr.put(obj)
+            arr.toString()
+        } else null
+
+        Pair(reply, citationsJson)
+    }
+
+    /**
+     * Send message to Express /api/chat endpoint
+     * Expects: POST /api/chat with {"message": "..."}
+     * Returns: response text from {"response": "..."}
+     */
+    suspend fun sendChatMessage(backendBaseUrl: String, message: String): String = withContext(Dispatchers.IO) {
+        val (text, _) = sendChatMessageWithGrounding(backendBaseUrl, message)
+        text
     }
 
     /**
